@@ -3,11 +3,11 @@
   <title>JaxRunboo&#39;s blog</title>
   
   <subtitle>farmer</subtitle>
-  <link href="/blog/atom.xml" rel="self"/>
+  <link href="/atom.xml" rel="self"/>
   
-  <link href="http://yoursite.com/blog/"/>
+  <link href="https://www.smallapp.xyz/"/>
   <updated>2020-04-02T03:47:24.388Z</updated>
-  <id>http://yoursite.com/blog/</id>
+  <id>https://www.smallapp.xyz/</id>
   
   <author>
     <name>JaxRunboo</name>
@@ -18,8 +18,8 @@
   
   <entry>
     <title>1155 想要判断给出的binary tree是否是一个heap</title>
-    <link href="http://yoursite.com/blog/2020/03/31/1155HeapPaths/"/>
-    <id>http://yoursite.com/blog/2020/03/31/1155HeapPaths/</id>
+    <link href="https://www.smallapp.xyz/2020/03/31/1155HeapPaths/"/>
+    <id>https://www.smallapp.xyz/2020/03/31/1155HeapPaths/</id>
     <published>2020-03-31T02:55:32.734Z</published>
     <updated>2020-04-02T03:47:24.388Z</updated>
     
@@ -36,17 +36,17 @@
     </summary>
     
     
-      <category term="pta" scheme="http://yoursite.com/blog/categories/pta/"/>
+      <category term="pta" scheme="https://www.smallapp.xyz/categories/pta/"/>
     
     
-      <category term="pta" scheme="http://yoursite.com/blog/tags/pta/"/>
+      <category term="pta" scheme="https://www.smallapp.xyz/tags/pta/"/>
     
   </entry>
   
   <entry>
     <title>1151 LCA in Binray Tree</title>
-    <link href="http://yoursite.com/blog/2020/03/31/1151lcaInBinaryTree/"/>
-    <id>http://yoursite.com/blog/2020/03/31/1151lcaInBinaryTree/</id>
+    <link href="https://www.smallapp.xyz/2020/03/31/1151lcaInBinaryTree/"/>
+    <id>https://www.smallapp.xyz/2020/03/31/1151lcaInBinaryTree/</id>
     <published>2020-03-31T02:55:32.720Z</published>
     <updated>2020-04-02T03:46:58.607Z</updated>
     
@@ -62,17 +62,17 @@
     </summary>
     
     
-      <category term="pta" scheme="http://yoursite.com/blog/categories/pta/"/>
+      <category term="pta" scheme="https://www.smallapp.xyz/categories/pta/"/>
     
     
-      <category term="pta" scheme="http://yoursite.com/blog/tags/pta/"/>
+      <category term="pta" scheme="https://www.smallapp.xyz/tags/pta/"/>
     
   </entry>
   
   <entry>
     <title>1147 Heaps</title>
-    <link href="http://yoursite.com/blog/2020/03/31/1147Heaps/"/>
-    <id>http://yoursite.com/blog/2020/03/31/1147Heaps/</id>
+    <link href="https://www.smallapp.xyz/2020/03/31/1147Heaps/"/>
+    <id>https://www.smallapp.xyz/2020/03/31/1147Heaps/</id>
     <published>2020-03-31T02:55:32.712Z</published>
     <updated>2020-04-02T03:46:37.950Z</updated>
     
@@ -88,17 +88,17 @@
     </summary>
     
     
-      <category term="pta" scheme="http://yoursite.com/blog/categories/pta/"/>
+      <category term="pta" scheme="https://www.smallapp.xyz/categories/pta/"/>
     
     
-      <category term="pta" scheme="http://yoursite.com/blog/tags/pta/"/>
+      <category term="pta" scheme="https://www.smallapp.xyz/tags/pta/"/>
     
   </entry>
   
   <entry>
     <title>1138PostOrderTraversal</title>
-    <link href="http://yoursite.com/blog/2020/03/31/1138PostOrderTraversal/"/>
-    <id>http://yoursite.com/blog/2020/03/31/1138PostOrderTraversal/</id>
+    <link href="https://www.smallapp.xyz/2020/03/31/1138PostOrderTraversal/"/>
+    <id>https://www.smallapp.xyz/2020/03/31/1138PostOrderTraversal/</id>
     <published>2020-03-31T02:55:32.698Z</published>
     <updated>2020-04-02T03:46:22.444Z</updated>
     
@@ -114,17 +114,17 @@
     </summary>
     
     
-      <category term="pta" scheme="http://yoursite.com/blog/categories/pta/"/>
+      <category term="pta" scheme="https://www.smallapp.xyz/categories/pta/"/>
     
     
-      <category term="pta" scheme="http://yoursite.com/blog/tags/pta/"/>
+      <category term="pta" scheme="https://www.smallapp.xyz/tags/pta/"/>
     
   </entry>
   
   <entry>
     <title>1135 1135RedBlackTree</title>
-    <link href="http://yoursite.com/blog/2020/03/31/1135RedBlackTree/"/>
-    <id>http://yoursite.com/blog/2020/03/31/1135RedBlackTree/</id>
+    <link href="https://www.smallapp.xyz/2020/03/31/1135RedBlackTree/"/>
+    <id>https://www.smallapp.xyz/2020/03/31/1135RedBlackTree/</id>
     <published>2020-03-31T02:55:32.696Z</published>
     <updated>2020-04-02T03:46:10.604Z</updated>
     
@@ -140,17 +140,17 @@
     </summary>
     
     
-      <category term="pta" scheme="http://yoursite.com/blog/categories/pta/"/>
+      <category term="pta" scheme="https://www.smallapp.xyz/categories/pta/"/>
     
     
-      <category term="pta" scheme="http://yoursite.com/blog/tags/pta/"/>
+      <category term="pta" scheme="https://www.smallapp.xyz/tags/pta/"/>
     
   </entry>
   
   <entry>
     <title>1127 ZigZagging on a Tree</title>
-    <link href="http://yoursite.com/blog/2020/03/31/1127ZigZaggingTree/"/>
-    <id>http://yoursite.com/blog/2020/03/31/1127ZigZaggingTree/</id>
+    <link href="https://www.smallapp.xyz/2020/03/31/1127ZigZaggingTree/"/>
+    <id>https://www.smallapp.xyz/2020/03/31/1127ZigZaggingTree/</id>
     <published>2020-03-31T02:55:32.686Z</published>
     <updated>2020-04-02T03:45:18.239Z</updated>
     
@@ -166,17 +166,17 @@
     </summary>
     
     
-      <category term="pta" scheme="http://yoursite.com/blog/categories/pta/"/>
+      <category term="pta" scheme="https://www.smallapp.xyz/categories/pta/"/>
     
     
-      <category term="pta" scheme="http://yoursite.com/blog/tags/pta/"/>
+      <category term="pta" scheme="https://www.smallapp.xyz/tags/pta/"/>
     
   </entry>
   
   <entry>
     <title>1119 Pre and Post-order Traversals</title>
-    <link href="http://yoursite.com/blog/2020/03/31/1119PreAndPostorderTraversals/"/>
-    <id>http://yoursite.com/blog/2020/03/31/1119PreAndPostorderTraversals/</id>
+    <link href="https://www.smallapp.xyz/2020/03/31/1119PreAndPostorderTraversals/"/>
+    <id>https://www.smallapp.xyz/2020/03/31/1119PreAndPostorderTraversals/</id>
     <published>2020-03-31T02:55:32.677Z</published>
     <updated>2020-04-02T03:45:01.603Z</updated>
     
@@ -192,17 +192,17 @@
     </summary>
     
     
-      <category term="pta" scheme="http://yoursite.com/blog/categories/pta/"/>
+      <category term="pta" scheme="https://www.smallapp.xyz/categories/pta/"/>
     
     
-      <category term="pta" scheme="http://yoursite.com/blog/tags/pta/"/>
+      <category term="pta" scheme="https://www.smallapp.xyz/tags/pta/"/>
     
   </entry>
   
   <entry>
     <title>1115 Counting Nodes in a BST</title>
-    <link href="http://yoursite.com/blog/2020/03/31/1115CountingNodesInBST/"/>
-    <id>http://yoursite.com/blog/2020/03/31/1115CountingNodesInBST/</id>
+    <link href="https://www.smallapp.xyz/2020/03/31/1115CountingNodesInBST/"/>
+    <id>https://www.smallapp.xyz/2020/03/31/1115CountingNodesInBST/</id>
     <published>2020-03-31T02:55:32.667Z</published>
     <updated>2020-04-02T03:44:33.551Z</updated>
     
@@ -218,17 +218,17 @@
     </summary>
     
     
-      <category term="pta" scheme="http://yoursite.com/blog/categories/pta/"/>
+      <category term="pta" scheme="https://www.smallapp.xyz/categories/pta/"/>
     
     
-      <category term="pta" scheme="http://yoursite.com/blog/tags/pta/"/>
+      <category term="pta" scheme="https://www.smallapp.xyz/tags/pta/"/>
     
   </entry>
   
   <entry>
     <title>1110 Complete Binary Tree</title>
-    <link href="http://yoursite.com/blog/2020/03/31/1110CompleteBinaryTree/"/>
-    <id>http://yoursite.com/blog/2020/03/31/1110CompleteBinaryTree/</id>
+    <link href="https://www.smallapp.xyz/2020/03/31/1110CompleteBinaryTree/"/>
+    <id>https://www.smallapp.xyz/2020/03/31/1110CompleteBinaryTree/</id>
     <published>2020-03-31T02:55:32.650Z</published>
     <updated>2020-04-02T02:40:52.834Z</updated>
     
@@ -244,17 +244,17 @@
     </summary>
     
     
-      <category term="pta" scheme="http://yoursite.com/blog/categories/pta/"/>
+      <category term="pta" scheme="https://www.smallapp.xyz/categories/pta/"/>
     
     
-      <category term="pta" scheme="http://yoursite.com/blog/tags/pta/"/>
+      <category term="pta" scheme="https://www.smallapp.xyz/tags/pta/"/>
     
   </entry>
   
   <entry>
     <title>1106 Lowest Price in Supply Chain</title>
-    <link href="http://yoursite.com/blog/2020/03/31/1106LowestPriceInSupplyChain/"/>
-    <id>http://yoursite.com/blog/2020/03/31/1106LowestPriceInSupplyChain/</id>
+    <link href="https://www.smallapp.xyz/2020/03/31/1106LowestPriceInSupplyChain/"/>
+    <id>https://www.smallapp.xyz/2020/03/31/1106LowestPriceInSupplyChain/</id>
     <published>2020-03-31T02:55:32.648Z</published>
     <updated>2020-04-02T03:44:42.004Z</updated>
     
@@ -270,17 +270,17 @@
     </summary>
     
     
-      <category term="pta" scheme="http://yoursite.com/blog/categories/pta/"/>
+      <category term="pta" scheme="https://www.smallapp.xyz/categories/pta/"/>
     
     
-      <category term="pta" scheme="http://yoursite.com/blog/tags/pta/"/>
+      <category term="pta" scheme="https://www.smallapp.xyz/tags/pta/"/>
     
   </entry>
   
   <entry>
     <title>pta相关词汇</title>
-    <link href="http://yoursite.com/blog/2020/03/31/vocabulary/"/>
-    <id>http://yoursite.com/blog/2020/03/31/vocabulary/</id>
+    <link href="https://www.smallapp.xyz/2020/03/31/vocabulary/"/>
+    <id>https://www.smallapp.xyz/2020/03/31/vocabulary/</id>
     <published>2020-03-31T02:55:32.645Z</published>
     <updated>2020-04-02T03:47:54.938Z</updated>
     
@@ -297,17 +297,17 @@
     </summary>
     
     
-      <category term="pta" scheme="http://yoursite.com/blog/categories/pta/"/>
+      <category term="pta" scheme="https://www.smallapp.xyz/categories/pta/"/>
     
     
-      <category term="pta" scheme="http://yoursite.com/blog/tags/pta/"/>
+      <category term="pta" scheme="https://www.smallapp.xyz/tags/pta/"/>
     
   </entry>
   
   <entry>
     <title>调试</title>
-    <link href="http://yoursite.com/blog/2020/03/21/1.7%E8%B0%83%E8%AF%95/"/>
-    <id>http://yoursite.com/blog/2020/03/21/1.7%E8%B0%83%E8%AF%95/</id>
+    <link href="https://www.smallapp.xyz/2020/03/21/1.7%E8%B0%83%E8%AF%95/"/>
+    <id>https://www.smallapp.xyz/2020/03/21/1.7%E8%B0%83%E8%AF%95/</id>
     <published>2020-03-20T16:00:00.000Z</published>
     <updated>2020-04-02T05:47:02.745Z</updated>
     
@@ -323,17 +323,17 @@
     </summary>
     
     
-      <category term="ABP" scheme="http://yoursite.com/blog/categories/ABP/"/>
+      <category term="ABP" scheme="https://www.smallapp.xyz/categories/ABP/"/>
     
     
-      <category term="ABP" scheme="http://yoursite.com/blog/tags/ABP/"/>
+      <category term="ABP" scheme="https://www.smallapp.xyz/tags/ABP/"/>
     
   </entry>
   
   <entry>
     <title>什么是ABP(ASP.NET Boilerplate)</title>
-    <link href="http://yoursite.com/blog/2020/03/21/1.1%E4%BB%80%E4%B9%88%E6%98%AFABP/"/>
-    <id>http://yoursite.com/blog/2020/03/21/1.1%E4%BB%80%E4%B9%88%E6%98%AFABP/</id>
+    <link href="https://www.smallapp.xyz/2020/03/21/1.1%E4%BB%80%E4%B9%88%E6%98%AFABP/"/>
+    <id>https://www.smallapp.xyz/2020/03/21/1.1%E4%BB%80%E4%B9%88%E6%98%AFABP/</id>
     <published>2020-03-20T16:00:00.000Z</published>
     <updated>2020-04-02T05:46:22.456Z</updated>
     
@@ -349,17 +349,17 @@
     </summary>
     
     
-      <category term="ABP" scheme="http://yoursite.com/blog/categories/ABP/"/>
+      <category term="ABP" scheme="https://www.smallapp.xyz/categories/ABP/"/>
     
     
-      <category term="ABP" scheme="http://yoursite.com/blog/tags/ABP/"/>
+      <category term="ABP" scheme="https://www.smallapp.xyz/tags/ABP/"/>
     
   </entry>
   
   <entry>
     <title>模块系统</title>
-    <link href="http://yoursite.com/blog/2020/03/21/1.3%E6%A8%A1%E5%9D%97%E7%B3%BB%E7%BB%9F/"/>
-    <id>http://yoursite.com/blog/2020/03/21/1.3%E6%A8%A1%E5%9D%97%E7%B3%BB%E7%BB%9F/</id>
+    <link href="https://www.smallapp.xyz/2020/03/21/1.3%E6%A8%A1%E5%9D%97%E7%B3%BB%E7%BB%9F/"/>
+    <id>https://www.smallapp.xyz/2020/03/21/1.3%E6%A8%A1%E5%9D%97%E7%B3%BB%E7%BB%9F/</id>
     <published>2020-03-20T16:00:00.000Z</published>
     <updated>2020-04-02T05:46:37.912Z</updated>
     
@@ -375,17 +375,17 @@
     </summary>
     
     
-      <category term="ABP" scheme="http://yoursite.com/blog/categories/ABP/"/>
+      <category term="ABP" scheme="https://www.smallapp.xyz/categories/ABP/"/>
     
     
-      <category term="ABP" scheme="http://yoursite.com/blog/tags/ABP/"/>
+      <category term="ABP" scheme="https://www.smallapp.xyz/tags/ABP/"/>
     
   </entry>
   
   <entry>
     <title>启动配置</title>
-    <link href="http://yoursite.com/blog/2020/03/21/1.4%E5%90%AF%E5%8A%A8%E9%85%8D%E7%BD%AE/"/>
-    <id>http://yoursite.com/blog/2020/03/21/1.4%E5%90%AF%E5%8A%A8%E9%85%8D%E7%BD%AE/</id>
+    <link href="https://www.smallapp.xyz/2020/03/21/1.4%E5%90%AF%E5%8A%A8%E9%85%8D%E7%BD%AE/"/>
+    <id>https://www.smallapp.xyz/2020/03/21/1.4%E5%90%AF%E5%8A%A8%E9%85%8D%E7%BD%AE/</id>
     <published>2020-03-20T16:00:00.000Z</published>
     <updated>2020-04-02T05:46:45.688Z</updated>
     
@@ -403,17 +403,17 @@
     </summary>
     
     
-      <category term="ABP" scheme="http://yoursite.com/blog/categories/ABP/"/>
+      <category term="ABP" scheme="https://www.smallapp.xyz/categories/ABP/"/>
     
     
-      <category term="ABP" scheme="http://yoursite.com/blog/tags/ABP/"/>
+      <category term="ABP" scheme="https://www.smallapp.xyz/tags/ABP/"/>
     
   </entry>
   
   <entry>
     <title>OWIN集成</title>
-    <link href="http://yoursite.com/blog/2020/03/21/1.6owin%E9%9B%86%E6%88%90/"/>
-    <id>http://yoursite.com/blog/2020/03/21/1.6owin%E9%9B%86%E6%88%90/</id>
+    <link href="https://www.smallapp.xyz/2020/03/21/1.6owin%E9%9B%86%E6%88%90/"/>
+    <id>https://www.smallapp.xyz/2020/03/21/1.6owin%E9%9B%86%E6%88%90/</id>
     <published>2020-03-20T16:00:00.000Z</published>
     <updated>2020-04-02T05:46:57.585Z</updated>
     
@@ -430,17 +430,17 @@
     </summary>
     
     
-      <category term="ABP" scheme="http://yoursite.com/blog/categories/ABP/"/>
+      <category term="ABP" scheme="https://www.smallapp.xyz/categories/ABP/"/>
     
     
-      <category term="ABP" scheme="http://yoursite.com/blog/tags/ABP/"/>
+      <category term="ABP" scheme="https://www.smallapp.xyz/tags/ABP/"/>
     
   </entry>
   
   <entry>
     <title>Session</title>
-    <link href="http://yoursite.com/blog/2020/03/21/2.2session/"/>
-    <id>http://yoursite.com/blog/2020/03/21/2.2session/</id>
+    <link href="https://www.smallapp.xyz/2020/03/21/2.2session/"/>
+    <id>https://www.smallapp.xyz/2020/03/21/2.2session/</id>
     <published>2020-03-20T16:00:00.000Z</published>
     <updated>2020-04-02T05:47:12.588Z</updated>
     
@@ -456,17 +456,17 @@
     </summary>
     
     
-      <category term="ABP" scheme="http://yoursite.com/blog/categories/ABP/"/>
+      <category term="ABP" scheme="https://www.smallapp.xyz/categories/ABP/"/>
     
     
-      <category term="ABP" scheme="http://yoursite.com/blog/tags/ABP/"/>
+      <category term="ABP" scheme="https://www.smallapp.xyz/tags/ABP/"/>
     
   </entry>
   
   <entry>
     <title>多层架构</title>
-    <link href="http://yoursite.com/blog/2020/03/21/1.2%E5%A4%9A%E5%B1%82%E6%9E%B6%E6%9E%84/"/>
-    <id>http://yoursite.com/blog/2020/03/21/1.2%E5%A4%9A%E5%B1%82%E6%9E%B6%E6%9E%84/</id>
+    <link href="https://www.smallapp.xyz/2020/03/21/1.2%E5%A4%9A%E5%B1%82%E6%9E%B6%E6%9E%84/"/>
+    <id>https://www.smallapp.xyz/2020/03/21/1.2%E5%A4%9A%E5%B1%82%E6%9E%B6%E6%9E%84/</id>
     <published>2020-03-20T16:00:00.000Z</published>
     <updated>2020-04-02T05:46:30.017Z</updated>
     
@@ -482,17 +482,17 @@
     </summary>
     
     
-      <category term="ABP" scheme="http://yoursite.com/blog/categories/ABP/"/>
+      <category term="ABP" scheme="https://www.smallapp.xyz/categories/ABP/"/>
     
     
-      <category term="ABP" scheme="http://yoursite.com/blog/tags/ABP/"/>
+      <category term="ABP" scheme="https://www.smallapp.xyz/tags/ABP/"/>
     
   </entry>
   
   <entry>
     <title>多租户</title>
-    <link href="http://yoursite.com/blog/2020/03/21/1.5%E5%A4%9A%E7%A7%9F%E6%88%B7/"/>
-    <id>http://yoursite.com/blog/2020/03/21/1.5%E5%A4%9A%E7%A7%9F%E6%88%B7/</id>
+    <link href="https://www.smallapp.xyz/2020/03/21/1.5%E5%A4%9A%E7%A7%9F%E6%88%B7/"/>
+    <id>https://www.smallapp.xyz/2020/03/21/1.5%E5%A4%9A%E7%A7%9F%E6%88%B7/</id>
     <published>2020-03-20T16:00:00.000Z</published>
     <updated>2020-04-02T05:46:51.146Z</updated>
     
@@ -508,17 +508,17 @@
     </summary>
     
     
-      <category term="ABP" scheme="http://yoursite.com/blog/categories/ABP/"/>
+      <category term="ABP" scheme="https://www.smallapp.xyz/categories/ABP/"/>
     
     
-      <category term="ABP" scheme="http://yoursite.com/blog/tags/ABP/"/>
+      <category term="ABP" scheme="https://www.smallapp.xyz/tags/ABP/"/>
     
   </entry>
   
   <entry>
     <title>缓存</title>
-    <link href="http://yoursite.com/blog/2020/03/21/2.3%E7%BC%93%E5%AD%98/"/>
-    <id>http://yoursite.com/blog/2020/03/21/2.3%E7%BC%93%E5%AD%98/</id>
+    <link href="https://www.smallapp.xyz/2020/03/21/2.3%E7%BC%93%E5%AD%98/"/>
+    <id>https://www.smallapp.xyz/2020/03/21/2.3%E7%BC%93%E5%AD%98/</id>
     <published>2020-03-20T16:00:00.000Z</published>
     <updated>2020-04-02T05:47:22.705Z</updated>
     
@@ -534,10 +534,10 @@
     </summary>
     
     
-      <category term="ABP" scheme="http://yoursite.com/blog/categories/ABP/"/>
+      <category term="ABP" scheme="https://www.smallapp.xyz/categories/ABP/"/>
     
     
-      <category term="ABP" scheme="http://yoursite.com/blog/tags/ABP/"/>
+      <category term="ABP" scheme="https://www.smallapp.xyz/tags/ABP/"/>
     
   </entry>
   
