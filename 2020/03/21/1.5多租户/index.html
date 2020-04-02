@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/blog/images/apple-touch-icon-self.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/blog/images/favicon-32x32-self.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/blog/images/favicon-16x16-self.png">
+  <link rel="mask-icon" href="/blog/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/blog/css/main.css">
+
+
+<link rel="stylesheet" href="/blog/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/blog/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":"gitalk","activeClass":"gitalk"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":5,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="什么是多租户软件多租户指的是一种软件架构，其中一个软件实例运行在服务器上，为多个租户服务。租户是一组用户，他们共享对软件实例具有特定特权的公共访问。使用多租户体系结构，软件应用程序被设计为为每个租户提供一个专用的实例共享，包括其数据、配置、用户管理、租户个人功能和非功能性属性。多租户与多实例体系结构形成对比，在多实例体系结构中，独立的软件实例代表不同的租户进行操作。简而言之，多租户是一项创建SAA">
+<meta property="og:type" content="article">
+<meta property="og:title" content="多租户">
+<meta property="og:url" content="http://yoursite.com/blog/2020/03/21/1.5%E5%A4%9A%E7%A7%9F%E6%88%B7/index.html">
+<meta property="og:site_name" content="JaxRunboo&#39;s blog">
+<meta property="og:description" content="什么是多租户软件多租户指的是一种软件架构，其中一个软件实例运行在服务器上，为多个租户服务。租户是一组用户，他们共享对软件实例具有特定特权的公共访问。使用多租户体系结构，软件应用程序被设计为为每个租户提供一个专用的实例共享，包括其数据、配置、用户管理、租户个人功能和非功能性属性。多租户与多实例体系结构形成对比，在多实例体系结构中，独立的软件实例代表不同的租户进行操作。简而言之，多租户是一项创建SAA">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-03-20T16:00:00.000Z">
+<meta property="article:modified_time" content="2020-04-02T05:46:51.146Z">
+<meta property="article:author" content="JaxRunboo">
+<meta property="article:tag" content="ABP">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/blog/2020/03/21/1.5%E5%A4%9A%E7%A7%9F%E6%88%B7/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>多租户 | JaxRunboo's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/blog/atom.xml" title="JaxRunboo's blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/blog/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">JaxRunboo's blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">farmer</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/blog/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/blog/tags/" rel="section"><i class="tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/blog/categories/" rel="section"><i class="categories fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/blog/archives/" rel="section"><i class="archives fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <a href="https://github.com/JaxRunboo" class="github-corner" title="JaxRunboo GitHub" aria-label="JaxRunboo GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/blog/2020/03/21/1.5%E5%A4%9A%E7%A7%9F%E6%88%B7/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/blog/images/avatar.gif">
+      <meta itemprop="name" content="JaxRunboo">
+      <meta itemprop="description" content="ABP,PTA">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JaxRunboo's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          多租户
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-03-21 00:00:00" itemprop="dateCreated datePublished" datetime="2020-03-21T00:00:00+08:00">2020-03-21</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-02 13:46:51" itemprop="dateModified" datetime="2020-04-02T13:46:51+08:00">2020-04-02</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/blog/categories/ABP/" itemprop="url" rel="index"><span itemprop="name">ABP</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="什么是多租户"><a href="#什么是多租户" class="headerlink" title="什么是多租户"></a>什么是多租户</h2><p>软件多租户指的是一种软件架构，其中一个软件实例运行在服务器上，为多个租户服务。租户是一组用户，他们共享对软件实例具有特定特权的公共访问。使用多租户体系结构，软件应用程序被设计为为每个租户提供一个专用的实例共享，包括其数据、配置、用户管理、租户个人功能和非功能性属性。多租户与多实例体系结构形成对比，在多实例体系结构中，独立的软件实例代表不同的租户进行操作。<br>简而言之，多租户是一项创建SAAS(Software as-a Service)应用的服务。</p>
+<h2 id="数据库和部署架构"><a href="#数据库和部署架构" class="headerlink" title="数据库和部署架构"></a>数据库和部署架构</h2><p>有一些不同的多租户数据库和部署方法：</p>
+<h3 id="多个部署——多个数据库"><a href="#多个部署——多个数据库" class="headerlink" title="多个部署——多个数据库"></a>多个部署——多个数据库</h3><p>这实际上不是多租户，但是如果我们使用一个独立的数据库为每个客户(租户)运行一个应用程序实例，我们可以在一个服务器上为多个租户提供服务。我们只需确保应用程序的多个实例在相同的服务器环境中不会相互冲突。<br>对于设计为非多租户的现有应用程序，这也是可能的。创建这样的应用程序比较容易，因为应用程序不知道多租户。但是，这种方法存在设置、使用和维护问题。</p>
+<h3 id="单一部署—多个数据库"><a href="#单一部署—多个数据库" class="headerlink" title="单一部署—多个数据库"></a>单一部署—多个数据库</h3><p>在这种方法中，我们在服务器上运行应用程序的单个实例。我们有一个主(主机)数据库来存储租户元数据(如租户名称和子域)，并为每个租户提供一个单独的数据库。一旦我们确定了当前的租户(例如，从子域或从用户登录表单),然后，我们可以切换到该租户的数据库来执行操作。<br>我们为每个租户创建和维护一个单独的数据库，这包括数据库迁移。如果我们有许多使用专用数据库的客户，那么在应用程序更新期间迁移数据库模式可能需要很长时间。由于每个承租者都有一个单独的数据库，所以可以将其数据库与其他承租者分开备份。如果租户需要，我们还可以将租户数据库移动到更强大的服务器上。</p>
+<h3 id="单一部署——单一数据库"><a href="#单一部署——单一数据库" class="headerlink" title="单一部署——单一数据库"></a>单一部署——单一数据库</h3><p>这是最理想的多租户体系结构:我们只将应用程序的单个实例与单个数据库部署到单个服务器上。每个表(对于RDBMS)中都有一个TenantId(或类似的)字段，用于将租户的数据与其他数据隔离。<br>这种类型的应用程序易于设置和维护，但难于创建。这是因为我们必须防止租户读取或写入其他租户数据。我们可以为每个数据库读(选择)操作添加一个TenantId过滤器。我们也可以在每次写入时检查它，看看这个实体是否与当前租户相关。这很乏味，而且容易出错。然而,ASP。NET Boilerplate通过使用自动数据过滤来帮助我们。<br>如果有许多租户使用大型数据集，则此方法可能会出现性能问题。我们可以使用表分区或其他数据库特性来克服这个问题。</p>
+<h3 id="单一部署——混合数据库"><a href="#单一部署——混合数据库" class="headerlink" title="单一部署——混合数据库"></a>单一部署——混合数据库</h3><p>通常，我们可能希望将租户存储在单个数据库中，但是可能希望为所需的租户创建一个单独的数据库。例如，我们可以将拥有大数据的租户存储在他们自己的数据库中，而将所有其他租户存储在一个数据库中。</p>
+<h3 id="多部署——单个-多个-混合数据库"><a href="#多部署——单个-多个-混合数据库" class="headerlink" title="多部署——单个/多个/混合数据库"></a>多部署——单个/多个/混合数据库</h3><p>最后，我们可能希望将应用程序部署到多个服务器(如web farm)，以获得更好的应用程序性能、高可用性和/或可伸缩性。这与数据库方法无关。</p>
+<h2 id="ABP中的多租户"><a href="#ABP中的多租户" class="headerlink" title="ABP中的多租户"></a>ABP中的多租户</h2><p>ABP可以处理上面描述的所有场景。</p>
+<h3 id="启用多租户"><a href="#启用多租户" class="headerlink" title="启用多租户"></a>启用多租户</h3><p>框架级别默认禁用多租户。我们可以在模块的PreInitialize method中启用它，如下图所示</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Configuration.MultiTenancy.IsEnabled &#x3D; true;</span><br></pre></td></tr></table></figure>
+<h3 id="忽略主机用户的特性检查"><a href="#忽略主机用户的特性检查" class="headerlink" title="忽略主机用户的特性检查"></a>忽略主机用户的特性检查</h3><p>还有一种配置可以忽略主机用户的特性检查。我们可以在模块的PreInitialize method中启用它，如下图所示:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Configuration.MultiTenancy.IgnoreFeatureCheckForHostUsers &#x3D; true;</span><br></pre></td></tr></table></figure>
+
+<h2 id="主机vs租户"><a href="#主机vs租户" class="headerlink" title="主机vs租户"></a>主机vs租户</h2><p>我们定义了在多租户系统中使用的两个术语:</p>
+<ul>
+<li>Tenant:有自己的用户、角色、权限、设置……并使用与其他租户完全隔离的应用程序。多租户应用程序将有一个或多个租户。如果这是一个CRM应用程序，不同的租户也有自己的帐户、联系人、产品和订单。所以当我们说“承租者用户”时，我们指的是承租者拥有的用户。</li>
+<li>Host: 主机是单例的(只有一个主机)。主机负责创建和管理租户。“主机用户”位于更高的级别，独立于所有租户，可以控制它们。<h2 id="Session-会话"><a href="#Session-会话" class="headerlink" title="Session(会话)"></a>Session(会话)</h2>ABP定义了IAbpSession接口来获取当前用户和租户id。默认情况下，此接口用于多租户以获取当前租户的id。因此，它可以根据当前租户的id过滤数据。</li>
+<li>如果UserId和TenantId都为空，则当前用户没有登录到系统。我们无法知道它是主机用户还是租户用户。在这种情况下，用户不能访问授权的内容。</li>
+<li>如果UserId不为空，TenantId为空，那么我们知道当前用户是主机用户。</li>
+<li>如果UserId不为空，TenantId也不为空，我们就知道当前用户是租户用户。</li>
+<li>如果UserId为null，但TenantId不为null，这意味着我们知道当前租户，但当前请求未被授权(用户未登录)。请参阅下一节以了解如何确定当前租户。</li>
+</ul>
+<p>有关<a href="https://aspnetboilerplate.com/Pages/Documents/Abp-Session" target="_blank" rel="noopener">更多信息</a>，请参见会话文档。</p>
+<h2 id="确定当前租户"><a href="#确定当前租户" class="headerlink" title="确定当前租户"></a>确定当前租户</h2><p>由于所有租户用户都使用相同的应用程序，所以我们应该有一种方法来区分当前请求的租户。默认的会话实现(ClaimsAbpSession)使用不同的方法来找到与当前请求相关的租户，顺序如下:</p>
+<ol>
+<li>如果用户已登录，它将从当前声明(claim)中获取TenantId。声明(claim)名称是<a href="http://www.aspnetboilerplate.com/identity/claims/tenantId，应该包含一个整数值。如果在声明中没有找到该用户，则假定该用户是主机用户。" target="_blank" rel="noopener">http://www.aspnetboilerplate.com/identity/claims/tenantId，应该包含一个整数值。如果在声明中没有找到该用户，则假定该用户是主机用户。</a></li>
+<li>如果用户尚未登录，则它将尝试从tenant resolve contributors解析TenantId。有3个预定义的租户贡献者，并以一个给定的顺序(第一个成功解析器’wins ‘)运行:<ol>
+<li>DomainTenantResolveContributor: 尝试从url解析租赁名称，通常是从域或子域解析。您可以在模块的PreInitialize方法中配置域格式(如Configuration.Modules.AbpWebCommon().MultiTenancy.DomainFormat = “{0}.mydomain.com”;)。如果域格式是“{0}.mydomain.com”，而请求的当前主机是acme.mydomain.com，则租赁权名称解析为“acme”。下一步是查询ITenantStore，根据给定的租户名称查找TenantId。如果找到租户，则将其解析为当前租户。<ol start="2">
+<li>HttpHeaderTenantResolveContributor: 如果存在，尝试从“Abp.TenantId”header值解析TenantId。这是在Abp.MultiTenancy.MultiTenancyConsts.TenantIdResolveKey中定义的一个常数。</li>
+<li>HttpCookieTenantResolveContributor: 如果存在，尝试从“Abp.TenantId”cookie值解析TenantId。这里使用的是与上面介绍的相同的常数。<br>默认情况下,ABP使用“Abp.TenantId”来从Cookie或请求头文件中查找TenantId。你可以使用多租户配置来更改:<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Configuration.MultiTenancy.TenantIdResolveKey &#x3D; &quot;Abp-TenantId&quot;;</span><br></pre></td></tr></table></figure>
+你还需要在客户端配置它:<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">abp.multiTenancy.tenantIdCookieName &#x3D; &#39;Abp-TenantId&#39;;</span><br></pre></td></tr></table></figure>
+如果这些尝试都不能解析TenantId，则认为当前请求者是主机。租户解析器是可扩展的。您可以向Configuration.MultiTenancy.Resolvers集合添加解析器，或删除现有的解析器。<br>关于解析器的最后一件事：出于性能原因，在同一请求期间缓存已解析的租户id。解析器在请求中执行一次，并且仅在当前用户尚未登录时执行。</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h2 id="租户存储"><a href="#租户存储" class="headerlink" title="租户存储"></a>租户存储</h2><p>DomainTenantResolveContributor使用ITenantStore根据租户名称查找租户id。ITenantStore的默认实现是NullTenantStore，它不包含任何租户，查询时返回null。您可以实现并替换它来从任何数据源查询租户。模块Zero通过从它的租户管理器获得它，从而正确地实现了它。因此，如果使用模块Zero，就不必担心租户存储。</p>
+<h2 id="数据过滤"><a href="#数据过滤" class="headerlink" title="数据过滤"></a>数据过滤</h2><p>对于多租户单数据库方法，我们必须添加TenantId过滤器，以便在从数据库检索实体时仅获取当前租户的实体。当您为您的实体实现两个接口之一:IMustHaveTenant和IMayHaveTenant时，ABP将自动执行此操作。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">public class Product : Entity, IMustHaveTenant</span><br><span class="line">&#123;</span><br><span class="line">    public int TenantId &#123; get; set; &#125;</span><br><span class="line"></span><br><span class="line">    public string Name &#123; get; set; &#125;</span><br><span class="line"></span><br><span class="line">    &#x2F;&#x2F;...other properties</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这种方式,ABP知道这是一个特定于租户的实体，并自动将租户的实体与其他租户隔离开来。</p>
+<h2 id="IMayHaveTenant接口"><a href="#IMayHaveTenant接口" class="headerlink" title="IMayHaveTenant接口"></a>IMayHaveTenant接口</h2><p>我们可能需要在主机和租户之间共享一个实体类型。因此，一个实体可以由租户或主机拥有。IMayHaveTenant接口也定义了TenantId(类似于IMustHaveTenant)，但是在本例中它是可空的。实现IMayHaveTenant的示例实体:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">public class Role : Entity, IMayHaveTenant</span><br><span class="line">&#123;</span><br><span class="line">    public int? TenantId &#123; get; set; &#125;</span><br><span class="line"></span><br><span class="line">    public string RoleName &#123; get; set; &#125;</span><br><span class="line"></span><br><span class="line">    &#x2F;&#x2F;...other properties</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们可以使用相同的角色类来存储主机角色和租户角色。在本例中，TenantId属性表示这是主机实体还是租户实体。空值意味着这是一个主机实体，非空值意味着这个实体由租户所有，而Id是TenantId。</p>
+<h2 id="补充说明"><a href="#补充说明" class="headerlink" title="补充说明"></a>补充说明</h2><p>IMayHaveTenant并不像IMustHaveTenant一样常见。例如，产品类不能是IMayHaveTenant，因为产品与实际的应用程序功能相关，而与管理承租者无关。所以要小心使用IMayHaveTenant接口，因为维护主机和租户共享的代码比较困难。<br>当你定义一个实体类型为IMustHaveTenant或IMayHaveTenant时，要在你创建一个新的实体时设置TenantId(然而ABP试图从当前TenantId设置它，在某些情况下可能不可能，特别是对于IMayHaveTenant实体)。大多数情况下，这是你处理TenantId属性的唯一时刻。在编写LINQ时，不需要在条件中显式地编写TenantId过滤器，因为它是自动过滤的。</p>
+<h2 id="在主机和租户之间切换"><a href="#在主机和租户之间切换" class="headerlink" title="在主机和租户之间切换"></a>在主机和租户之间切换</h2><p>在处理多租户应用程序数据库时，我们可以获得当前租户。默认情况下，它是从IAbpSession中获得的(如前所述)。我们可以更改此行为并切换到另一个租户的数据库。例子:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">public class ProductService : ITransientDependency</span><br><span class="line">&#123;</span><br><span class="line">    private readonly IRepository&lt;Product&gt; _productRepository;</span><br><span class="line">    private readonly IUnitOfWorkManager _unitOfWorkManager;</span><br><span class="line"></span><br><span class="line">    public ProductService(IRepository&lt;Product&gt; productRepository, IUnitOfWorkManager unitOfWorkManager)</span><br><span class="line">    &#123;</span><br><span class="line">        _productRepository &#x3D; productRepository;</span><br><span class="line">        _unitOfWorkManager &#x3D; unitOfWorkManager;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    [UnitOfWork]</span><br><span class="line">    public virtual List&lt;Product&gt; GetProducts(int tenantId)</span><br><span class="line">    &#123;</span><br><span class="line">        using (_unitOfWorkManager.Current.SetTenantId(tenantId))</span><br><span class="line">        &#123;</span><br><span class="line">            return _productRepository.GetAllList();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>SetTenantId确保我们处理的是给定租户的数据，独立于数据库架构:</p>
+<ul>
+<li>如果给定的租户有一个专用的数据库，它将切换到该数据库并从中获取产品。</li>
+<li>如果给定的租户没有专用的数据库(例如，单一数据库方法)，则添加自动TenantId筛选器来只查询该租户的产品。<br>如果我们不使用SetTenantId，它会从session获取tenantId。这里有一些指导方针和最佳实践:</li>
+<li>使用SetTenantId(null)切换到主机。</li>
+<li>如果没有特殊情况，请在using块中使用SetTenantId(如本例中所示)。通过这种方式，它会在using块的末尾自动恢复tenantId，并且调用GetProducts方法的代码与前面一样工作。</li>
+<li>如果需要，可以在嵌套块中使用SetTenantId。</li>
+<li>因为_unitOfWorkManager.Current仅在工作单元中可用，请确保您的代码在UOW中运行。</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/blog/tags/ABP/" rel="tag"># ABP</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/blog/2020/03/21/2.3%E7%BC%93%E5%AD%98/" rel="prev" title="缓存">
+      <i class="fa fa-chevron-left"></i> 缓存
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/blog/2020/03/21/1.2%E5%A4%9A%E5%B1%82%E6%9E%B6%E6%9E%84/" rel="next" title="多层架构">
+      多层架构 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是多租户"><span class="nav-number">1.</span> <span class="nav-text">什么是多租户</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据库和部署架构"><span class="nav-number">2.</span> <span class="nav-text">数据库和部署架构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#多个部署——多个数据库"><span class="nav-number">2.1.</span> <span class="nav-text">多个部署——多个数据库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#单一部署—多个数据库"><span class="nav-number">2.2.</span> <span class="nav-text">单一部署—多个数据库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#单一部署——单一数据库"><span class="nav-number">2.3.</span> <span class="nav-text">单一部署——单一数据库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#单一部署——混合数据库"><span class="nav-number">2.4.</span> <span class="nav-text">单一部署——混合数据库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多部署——单个-多个-混合数据库"><span class="nav-number">2.5.</span> <span class="nav-text">多部署——单个&#x2F;多个&#x2F;混合数据库</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ABP中的多租户"><span class="nav-number">3.</span> <span class="nav-text">ABP中的多租户</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#启用多租户"><span class="nav-number">3.1.</span> <span class="nav-text">启用多租户</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#忽略主机用户的特性检查"><span class="nav-number">3.2.</span> <span class="nav-text">忽略主机用户的特性检查</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#主机vs租户"><span class="nav-number">4.</span> <span class="nav-text">主机vs租户</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Session-会话"><span class="nav-number">5.</span> <span class="nav-text">Session(会话)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#确定当前租户"><span class="nav-number">6.</span> <span class="nav-text">确定当前租户</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#租户存储"><span class="nav-number">7.</span> <span class="nav-text">租户存储</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据过滤"><span class="nav-number">8.</span> <span class="nav-text">数据过滤</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IMayHaveTenant接口"><span class="nav-number">9.</span> <span class="nav-text">IMayHaveTenant接口</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#补充说明"><span class="nav-number">10.</span> <span class="nav-text">补充说明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在主机和租户之间切换"><span class="nav-number">11.</span> <span class="nav-text">在主机和租户之间切换</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">JaxRunboo</p>
+  <div class="site-description" itemprop="description">ABP,PTA</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/blog/archives/">
+        
+          <span class="site-state-item-count">21</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/blog/categories/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/blog/tags/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">JaxRunboo</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/blog/lib/anime.min.js"></script>
+  <script src="/blog/lib/pjax/pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/blog/lib/velocity/velocity.min.js"></script>
+  <script src="/blog/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/blog/js/utils.js"></script>
+
+<script src="/blog/js/motion.js"></script>
+
+
+<script src="/blog/js/schemes/pisces.js"></script>
+
+
+<script src="/blog/js/next-boot.js"></script>
+
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '.languages',
+    '#pjax'
+  ],
+  switches: {
+    '.post-toc-wrap': Pjax.switches.innerHTML
+  },
+  analytics: false,
+  cacheBust: false,
+  scrollTo : !CONFIG.bookmark.enable
+});
+
+window.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[data-pjax], script#page-configurations, #pjax script').forEach(element => {
+    var code = element.text || element.textContent || element.innerHTML || '';
+    var parent = element.parentNode;
+    parent.removeChild(element);
+    var script = document.createElement('script');
+    if (element.id) {
+      script.id = element.id;
+    }
+    if (element.className) {
+      script.className = element.className;
+    }
+    if (element.type) {
+      script.type = element.type;
+    }
+    if (element.src) {
+      script.src = element.src;
+      // Force synchronous loading of peripheral JS.
+      script.async = false;
+    }
+    if (element.dataset.pjax !== undefined) {
+      script.dataset.pjax = '';
+    }
+    if (code !== '') {
+      script.appendChild(document.createTextNode(code));
+    }
+    parent.appendChild(script);
+  });
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/blog/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div id="pjax">
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : 'f0b903122f424a1d6daf',
+      clientSecret: '548fe8efd49c50a8703c1ed6e91acd4dee685b44',
+      repo        : 'Jaxrunboo.github.io',
+      owner       : 'jaxrunboo',
+      admin       : ['jaxrunboo'],
+      id          : '6d83747a792cac405cc8c5d2a055923d',
+        language: 'zh-CN',
+      distractionFreeMode: false
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+    </div>
+</body>
+</html>
