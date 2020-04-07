@@ -190,6 +190,79 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://www.smallapp.xyz/2020/03/31/1106LowestPriceInSupplyChain/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="JaxRunboo">
+      <meta itemprop="description" content="ABP,PTA">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JaxRunboo's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/03/31/1106LowestPriceInSupplyChain/" class="post-title-link" itemprop="url">1106 Lowest Price in Supply Chain</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-03-31 10:55:32" itemprop="dateCreated datePublished" datetime="2020-03-31T10:55:32+08:00">2020-03-31</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-02 11:44:42" itemprop="dateModified" datetime="2020-04-02T11:44:42+08:00">2020-04-02</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/pta/" itemprop="url" rel="index"><span itemprop="name">pta</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h5 id="N-lt-10-10，可以使用vector二维数组存储数据"><a href="#N-lt-10-10，可以使用vector二维数组存储数据" class="headerlink" title="N&lt;10^10，可以使用vector二维数组存储数据"></a>N&lt;10^10，可以使用vector二维数组存储数据</h5><h5 id="万一末尾节点没有零售商？没有在考虑范围内，按照结果来看，零售商应该是叶子节点"><a href="#万一末尾节点没有零售商？没有在考虑范围内，按照结果来看，零售商应该是叶子节点" class="headerlink" title="万一末尾节点没有零售商？没有在考虑范围内，按照结果来看，零售商应该是叶子节点"></a>万一末尾节点没有零售商？没有在考虑范围内，按照结果来看，零售商应该是叶子节点</h5><h5 id="mindep表示层数-num表示叶节点个数"><a href="#mindep表示层数-num表示叶节点个数" class="headerlink" title="mindep表示层数  num表示叶节点个数"></a>mindep表示层数  num表示叶节点个数</h5><h5 id="需要注意结果精确位数"><a href="#需要注意结果精确位数" class="headerlink" title="需要注意结果精确位数"></a>需要注意结果精确位数</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;cstdio&gt;</span><br><span class="line">#include &lt;vector&gt;</span><br><span class="line">#include &lt;cmath&gt;</span><br><span class="line"></span><br><span class="line">using namespace std;</span><br><span class="line"></span><br><span class="line">int n;&#x2F;&#x2F;节点数</span><br><span class="line">vector&lt;int&gt; arr[100000];</span><br><span class="line">int mindep &#x3D; 99999999;</span><br><span class="line">int num&#x3D;1;</span><br><span class="line"></span><br><span class="line">void DFS(int root,int depth)</span><br><span class="line">&#123;</span><br><span class="line">    if(mindep&lt;depth)</span><br><span class="line">        return;</span><br><span class="line">    if(arr[root].size() &#x3D;&#x3D; 0)</span><br><span class="line">    &#123;</span><br><span class="line">        if(mindep&gt;depth)</span><br><span class="line">        &#123;</span><br><span class="line">            mindep &#x3D; depth;</span><br><span class="line">            num &#x3D;1;</span><br><span class="line">        &#125;</span><br><span class="line">        else if(mindep&#x3D;&#x3D; depth)</span><br><span class="line">        &#123;</span><br><span class="line">            num++;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    for(int i&#x3D;0; i&lt;arr[root].size(); i++)</span><br><span class="line">    &#123;</span><br><span class="line">        DFS(arr[root][i],depth+1);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">    int n;</span><br><span class="line">    double p,r;</span><br><span class="line">    scanf(&quot;%d %lf %lf&quot;,&amp;n,&amp;p,&amp;r);</span><br><span class="line">    for(int i&#x3D;0; i&lt;n; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        int ln;</span><br><span class="line">        scanf(&quot;%d&quot;,&amp;ln);</span><br><span class="line"></span><br><span class="line">        for(int j&#x3D;0; j&lt;ln; j++)</span><br><span class="line">        &#123;</span><br><span class="line">            int index;</span><br><span class="line">            scanf(&quot;%d&quot;,&amp;index);</span><br><span class="line">            arr[i].push_back(index);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    DFS(0,0);&#x2F;&#x2F;获取树</span><br><span class="line"></span><br><span class="line">    printf(&quot;%.4f %d&quot;,p*pow((1+r&#x2F;100),mindep),num);</span><br><span class="line"></span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://www.smallapp.xyz/2020/03/31/vocabulary/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -322,6 +395,85 @@
       
           <p>虽然通常不需要这样做，但是在调试项目时，您可能希望进入ABP的源代码。<br>所有官方的ABP NuGet包是Sourcelink启用。这意味着您可以轻松地调试项目中的Abp.* NuGet包。要启用它，请更改Visual Studio(2017+)调试选项如下:<br><img src="https://raw.githubusercontent.com/aspnetboilerplate/aspnetboilerplate/master/doc/WebSite/images/enable-sourcelink.png" alt="调试"></p>
 <p>一旦启用了它，就可以进入(F11) ABP源代码。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://www.smallapp.xyz/2020/03/21/1.6owin%E9%9B%86%E6%88%90/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="JaxRunboo">
+      <meta itemprop="description" content="ABP,PTA">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="JaxRunboo's blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/03/21/1.6owin%E9%9B%86%E6%88%90/" class="post-title-link" itemprop="url">OWIN集成</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-03-21 00:00:00" itemprop="dateCreated datePublished" datetime="2020-03-21T00:00:00+08:00">2020-03-21</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-02 13:46:57" itemprop="dateModified" datetime="2020-04-02T13:46:57+08:00">2020-04-02</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ABP/" itemprop="url" rel="index"><span itemprop="name">ABP</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>如果你同时使用ASP.NET MVC和ASP.NET Web API在您的应用程序中，您需要将Abp.Owin NuGet包添加到您的项目中。</p>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>将Abp.Owin NuGet包添加到您的主机项目(通常是Web项目)。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Install-Package Abp.Owin</span><br></pre></td></tr></table></figure>
+<h2 id="用法"><a href="#用法" class="headerlink" title="用法"></a>用法</h2><p>然后在你的OWIN启动文件中调用UseAbp()扩展方法，如下图所示:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[assembly: OwinStartup(typeof(Startup))]</span><br><span class="line">public class Startup</span><br><span class="line">&#123;</span><br><span class="line">    public void Configuration(IAppBuilder app)</span><br><span class="line">    &#123;</span><br><span class="line">        app.UseAbp();</span><br><span class="line"></span><br><span class="line">        &#x2F;&#x2F;your other configuration...</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果您只使用OWIN(例如，在一个自托管的Web API项目中)，那么您可以使用UseAbp的覆盖，它使用一个启动模块来初始化ABP框架。注意，只有在ABP没有以另一种方式初始化的情况下才应该这样做。</p>
 
       
     </div>
@@ -502,187 +654,6 @@
 <h2 id="应用层"><a href="#应用层" class="headerlink" title="应用层"></a>应用层</h2><p>应用层主要包括使用领域层对象及方法来实现应用请求的<strong>应用服务</strong>。使用数据传输对象来获取数据，并把数据返回给表示层或者分布式服务层。它还可以处理授权、缓存、审计日志记录、对象映射、会话等等……</p>
 <h2 id="领域层"><a href="#领域层" class="headerlink" title="领域层"></a>领域层</h2><p>这是实现域逻辑的主层。包括实体、值对象、领域服务来执行业务/域逻辑。它还可以包括规范和触发域事件。它定义了用于从数据源读取和持久化实体的存储库接口。</p>
 <h2 id="基础设施层"><a href="#基础设施层" class="headerlink" title="基础设施层"></a>基础设施层</h2><p>基础设施层为其它层提供保障：它直接跟数据库交互，从而实现了存储库接口(使用Entity Framework Core)。它还可能集成了发送邮件的方式等等。这并不是所有层下面的严格层，而是通过实现其他层的抽象概念来支持它们。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://www.smallapp.xyz/2020/03/21/1.3%E6%A8%A1%E5%9D%97%E7%B3%BB%E7%BB%9F/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="JaxRunboo">
-      <meta itemprop="description" content="ABP,PTA">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JaxRunboo's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/03/21/1.3%E6%A8%A1%E5%9D%97%E7%B3%BB%E7%BB%9F/" class="post-title-link" itemprop="url">模块系统</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-03-21 00:00:00" itemprop="dateCreated datePublished" datetime="2020-03-21T00:00:00+08:00">2020-03-21</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-02 13:46:37" itemprop="dateModified" datetime="2020-04-02T13:46:37+08:00">2020-04-02</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/ABP/" itemprop="url" rel="index"><span itemprop="name">ABP</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>ABP提供用于构建模块并将其组合以创建应用程序的基础设施。一个模块可基于另一个模块。通常，一个集合被当做一个模块，如果你创建了一个有多个集合的应用，这就需要为每个集合创建模块定义。<br>模块系统目前主要集中在服务器端，而不是客户端。</p>
-<h2 id="模块定义"><a href="#模块定义" class="headerlink" title="模块定义"></a>模块定义</h2><p>模块是使用派生自ABP包中的AbpModule的类定义的。假设我们正在开发一个可以用于不同应用程序的博客模块。最简单的模块定义可以像下面的例子一样：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">public class MyBlogApplicationModule : AbpModule</span><br><span class="line">&#123;</span><br><span class="line">    public override void Initialize()</span><br><span class="line">    &#123;</span><br><span class="line">        IocManager.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>模块定义类通过依赖注入注册需要的模块。也可以配置应用程序和其他模块，增加新功能等。</p>
-<h2 id="生命周期方法"><a href="#生命周期方法" class="headerlink" title="生命周期方法"></a>生命周期方法</h2><p>ABP在启动和关闭时调用一些特殊的方法。可以重写这些方法在执行一些特殊任务。ABP调用这些按照依赖排序的方法。<br>如果模块A依赖模块B，模块B会在模块A之前初始化。<br>准确的启动方法顺序：PreInitialize-B, PreInitialize-A, Initialize-B, Initialize-A, PostInitialize-B and PostInitialize-A。对于所有依赖关系图都是如此。关闭方法也类似，但顺序相反。</p>
-<h2 id="PreInitialize（预初始化）"><a href="#PreInitialize（预初始化）" class="headerlink" title="PreInitialize（预初始化）"></a>PreInitialize（预初始化）</h2><p>这个方法在应用启动时首先调用。这是在框架和其他模块初始化之前配置他们的首选方法。<br>可以在此写一些特殊code，在依赖项注入注册之前运行。例如，可以创建一个常规的注册类，在这里使用<strong>IocManager.AddConventionalRegisterer</strong>方法注册。</p>
-<h2 id="Initialize（初始化）"><a href="#Initialize（初始化）" class="headerlink" title="Initialize（初始化）"></a>Initialize（初始化）</h2><p>这是依赖项注入注册的位置。通常使用<strong>IocManager.AddConventionalRegisterer</strong>方法。如果想要自定义依赖项注册，查看<a href="https://aspnetboilerplate.com/Pages/Documents/Dependency-Injection" target="_blank" rel="noopener">依赖注入</a>说明文档。</p>
-<h2 id="PostInitialize（初始化后）"><a href="#PostInitialize（初始化后）" class="headerlink" title="PostInitialize（初始化后）"></a>PostInitialize（初始化后）</h2><p>这个方法在启动过程中最后调用。在这里解决依赖项是安全的。</p>
-<h2 id="Shutdown"><a href="#Shutdown" class="headerlink" title="Shutdown"></a>Shutdown</h2><p>这个方法在应用关闭的时候调用。</p>
-<h2 id="模块依赖"><a href="#模块依赖" class="headerlink" title="模块依赖"></a>模块依赖</h2><p>一个模块可以依赖于另一个模块。需要使用DependsOn属性显式声明依赖关系，如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[DependsOn(typeof(MyBlogCoreModule))]</span><br><span class="line">public class MyBlogApplicationModule : AbpModule</span><br><span class="line">&#123;</span><br><span class="line">    public override void Initialize()</span><br><span class="line">    &#123;</span><br><span class="line">        IocManager.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>MyBlogApplicationModule依赖于MyBlogCoreModule，应该在MyBlogApplicationModule之前初始化MyBlogCoreModule。<br>ABP可以从启动模块开始递归地解析依赖项，并相应地初始化它们。启动模块初始化为最后一个模块。</p>
-<h2 id="插件模块"><a href="#插件模块" class="headerlink" title="插件模块"></a>插件模块</h2><p>虽然从启动模块开始研究模块并遍历依赖项，ABP还可以动态加载模块。AbpBootstrapper类定义了PlugInSources属性，该属性可用于将源代码添加到动态加载的插件模块中。插件源可以是实现IPlugInSource接口的任何类。PlugInFolderSource类实现它来从位于文件夹中的程序集获取插件模块。</p>
-<h2 id="ASP-NET-Core"><a href="#ASP-NET-Core" class="headerlink" title="ASP.NET Core"></a>ASP.NET Core</h2><p>ABP ASP.NET Core模块在AddAbp扩展方法中定义了在Startup类中添加插件源的选项:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">services.AddAbp&lt;MyStartupModule&gt;(options &#x3D;&gt;</span><br><span class="line">&#123;</span><br><span class="line">    options.PlugInSources.Add(new FolderPlugInSource(@&quot;C:\MyPlugIns&quot;));</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-<p>我们可以使用一个更简单的语法AddFolder扩展方法:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">services.AddAbp&lt;MyStartupModule&gt;(options &#x3D;&gt;</span><br><span class="line">&#123;</span><br><span class="line">    options.PlugInSources.AddFolder(@&quot;C:\MyPlugIns&quot;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-<p><a href="https://aspnetboilerplate.com/Pages/Documents/AspNet-Core" target="_blank" rel="noopener">有关启动类的更多关于ASP.NET Core的信息</a></p>
-<h2 id="ASP-NET-MVC-Web-API"><a href="#ASP-NET-MVC-Web-API" class="headerlink" title="ASP.NET MVC, Web API"></a>ASP.NET MVC, Web API</h2><p>传统ASP.NET MVC应用，可以通过在global.asax中覆盖Application_Start来添加插件文件夹。如下图所示:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">public class MvcApplication : AbpWebApplication&lt;MyStartupModule&gt;</span><br><span class="line">&#123;</span><br><span class="line">    protected override void Application_Start(object sender, EventArgs e)</span><br><span class="line">    &#123;</span><br><span class="line">        AbpBootstrapper.PlugInSources.AddFolder(@&quot;C:\MyPlugIns&quot;);</span><br><span class="line">        &#x2F;&#x2F;...</span><br><span class="line">        base.Application_Start(sender, e);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="插件中的Controllers"><a href="#插件中的Controllers" class="headerlink" title="插件中的Controllers"></a>插件中的Controllers</h2><p>如果你的模块包括MVC或Web API控制器，ASP.NET无法调查您的控制器。为了克服这个问题，你可以改变global.asax文件如下:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">using System.Web;</span><br><span class="line">using Abp.PlugIns;</span><br><span class="line">using Abp.Web;</span><br><span class="line">using MyDemoApp.Web;</span><br><span class="line"></span><br><span class="line">[assembly: PreApplicationStartMethod(typeof(PreStarter), &quot;Start&quot;)]</span><br><span class="line"></span><br><span class="line">namespace MyDemoApp.Web</span><br><span class="line">&#123;</span><br><span class="line">    public class MvcApplication : AbpWebApplication&lt;MyStartupModule&gt;</span><br><span class="line">    &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static class PreStarter</span><br><span class="line">    &#123;</span><br><span class="line">        public static void Start()</span><br><span class="line">        &#123;</span><br><span class="line">            &#x2F;&#x2F;...</span><br><span class="line">            MvcApplication.AbpBootstrapper.PlugInSources.AddFolder(@&quot;C:\MyPlugIns\&quot;);</span><br><span class="line">            MvcApplication.AbpBootstrapper.PlugInSources.AddToBuildManager();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="附加组件"><a href="#附加组件" class="headerlink" title="附加组件"></a>附加组件</h2><p>IAssemblyFinder and ITypeFinder 的默认实现(ABP使用它们来研究应用程序中的特定类)只查找这些程序集中的模块程序集和类型。我们可以在模块中覆盖GetAdditionalAssemblies方法来包含额外的程序集。</p>
-<h2 id="定制模块方法"><a href="#定制模块方法" class="headerlink" title="定制模块方法"></a>定制模块方法</h2><p>您的模块还可以具有其他依赖于此模块的模块可以使用的自定义方法。假设MyModule2依赖于MyModule1，并且希望在PreInitialize方法中调用MyModule1的方法。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">public class MyModule1 : AbpModule</span><br><span class="line">&#123;</span><br><span class="line">    public override void Initialize()</span><br><span class="line">    &#123;</span><br><span class="line">        IocManager.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void MyModuleMethod1()</span><br><span class="line">    &#123;</span><br><span class="line">        &#x2F;&#x2F;this is a custom method of this module</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">[DependsOn(typeof(MyModule1))]</span><br><span class="line">public class MyModule2 : AbpModule</span><br><span class="line">&#123;</span><br><span class="line">    private readonly MyModule1 _myModule1;</span><br><span class="line"></span><br><span class="line">    public MyModule2(MyModule1 myModule1)</span><br><span class="line">    &#123;</span><br><span class="line">        _myModule1 &#x3D; myModule1;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public override void PreInitialize()</span><br><span class="line">    &#123;</span><br><span class="line">        _myModule1.MyModuleMethod1(); &#x2F;&#x2F;Call MyModule1&#39;s method</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public override void Initialize()</span><br><span class="line">    &#123;</span><br><span class="line">        IocManager.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>在这里，我们将构造函数注入到MyModule2中，因此MyModule2可以调用MyModule1的定制方法。这只有在Module2依赖于Module1时才有可能。</p>
-<h2 id="模块配置"><a href="#模块配置" class="headerlink" title="模块配置"></a>模块配置</h2><p>虽然可以使用自定义模块方法来配置模块，但我们建议您使用启动配置系统来定义和设置模块的配置。</p>
-<h2 id="模块生命周期"><a href="#模块生命周期" class="headerlink" title="模块生命周期"></a>模块生命周期</h2><p>模块类被自动注册为单例。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://www.smallapp.xyz/2020/03/21/1.6owin%E9%9B%86%E6%88%90/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="JaxRunboo">
-      <meta itemprop="description" content="ABP,PTA">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="JaxRunboo's blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/03/21/1.6owin%E9%9B%86%E6%88%90/" class="post-title-link" itemprop="url">OWIN集成</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-03-21 00:00:00" itemprop="dateCreated datePublished" datetime="2020-03-21T00:00:00+08:00">2020-03-21</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-02 13:46:57" itemprop="dateModified" datetime="2020-04-02T13:46:57+08:00">2020-04-02</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/ABP/" itemprop="url" rel="index"><span itemprop="name">ABP</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>如果你同时使用ASP.NET MVC和ASP.NET Web API在您的应用程序中，您需要将Abp.Owin NuGet包添加到您的项目中。</p>
-<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>将Abp.Owin NuGet包添加到您的主机项目(通常是Web项目)。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Install-Package Abp.Owin</span><br></pre></td></tr></table></figure>
-<h2 id="用法"><a href="#用法" class="headerlink" title="用法"></a>用法</h2><p>然后在你的OWIN启动文件中调用UseAbp()扩展方法，如下图所示:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[assembly: OwinStartup(typeof(Startup))]</span><br><span class="line">public class Startup</span><br><span class="line">&#123;</span><br><span class="line">    public void Configuration(IAppBuilder app)</span><br><span class="line">    &#123;</span><br><span class="line">        app.UseAbp();</span><br><span class="line"></span><br><span class="line">        &#x2F;&#x2F;your other configuration...</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>如果您只使用OWIN(例如，在一个自托管的Web API项目中)，那么您可以使用UseAbp的覆盖，它使用一个启动模块来初始化ABP框架。注意，只有在ABP没有以另一种方式初始化的情况下才应该这样做。</p>
 
       
     </div>
@@ -1234,7 +1205,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">21</span>
+          <span class="site-state-item-count">22</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
