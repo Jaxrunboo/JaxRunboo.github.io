@@ -1,91 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>启动配置</title>
-    <url>/2020/03/21/1.4%E5%90%AF%E5%8A%A8%E9%85%8D%E7%BD%AE/</url>
-    <content><![CDATA[<p>ABP提供启动时配置其模块的基础结构和模型。</p>
-<h2 id="配置ABP"><a href="#配置ABP" class="headerlink" title="配置ABP"></a>配置ABP</h2><p>在模块的预初始化方法中配置ABP。例如：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public class SimpleTaskSystemModule : AbpModule</span><br><span class="line">&#123;</span><br><span class="line">    public override void PreInitialize()</span><br><span class="line">    &#123;</span><br><span class="line">        &#x2F;&#x2F;Add languages for your application</span><br><span class="line">        Configuration.Localization.Languages.Add(new LanguageInfo(&quot;en&quot;, &quot;English&quot;, &quot;famfamfam-flag-england&quot;, true));</span><br><span class="line">        Configuration.Localization.Languages.Add(new LanguageInfo(&quot;tr&quot;, &quot;Türkçe&quot;, &quot;famfamfam-flag-tr&quot;));</span><br><span class="line"></span><br><span class="line">        &#x2F;&#x2F;Add a localization source</span><br><span class="line">        Configuration.Localization.Sources.Add(</span><br><span class="line">            new XmlLocalizationSource(</span><br><span class="line">                &quot;SimpleTaskSystem&quot;,</span><br><span class="line">                HttpContext.Current.Server.MapPath(&quot;~&#x2F;Localization&#x2F;SimpleTaskSystem&quot;)</span><br><span class="line">                )</span><br><span class="line">            );</span><br><span class="line"></span><br><span class="line">        &#x2F;&#x2F;Configure navigation&#x2F;menu</span><br><span class="line">        Configuration.Navigation.Providers.Add&lt;SimpleTaskSystemNavigationProvider&gt;();        </span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public override void Initialize()</span><br><span class="line">    &#123;</span><br><span class="line">        IocManager.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>ABP在设计时考虑了模块化。不同的模块可以配置ABP。例如，不同的模块可以添加导航提供程序来将它们自己的菜单项添加到主菜单。(有关配置的详细信息，请参阅本地化和导航文档)。</p>
-<h2 id="取代内置的服务"><a href="#取代内置的服务" class="headerlink" title="取代内置的服务"></a>取代内置的服务</h2><p>Configuration.ReplaceService方法可用于覆盖内置服务。例如，您可以使用自定义实现替换IAbpSession服务，如下所示:</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Configuration.ReplaceService&lt;IAbpSession, MySession&gt;(DependencyLifeStyle.Transient);</span><br></pre></td></tr></table></figure>
-<p>ReplaceService方法有一个重载，它通过一个动作以自定义的方式进行替换(您可以直接使用具有高级注册API的Castle Windsor)。</p>
-<h2 id="配置模块"><a href="#配置模块" class="headerlink" title="配置模块"></a>配置模块</h2><p>除了框架自己的启动配置外，模块还可以扩展IAbpModuleConfigurations接口来为模块提供配置点。例子:</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">...</span><br><span class="line">using Abp.Web.Configuration;</span><br><span class="line">...</span><br><span class="line">public override void PreInitialize()</span><br><span class="line">&#123;</span><br><span class="line">    Configuration.Modules.AbpWebCommon().SendAllExceptionsToClients &#x3D; true;</span><br><span class="line">&#125;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-<p>在本例中，我们将AbpWebCommon模块配置为将所有异常发送到客户端。<br>不是每个模块都应该定义这种类型的配置。当一个模块需要在不同的应用程序中重用，并且需要在启动时进行配置时，通常需要使用它。</p>
-<h2 id="为模块创建配置"><a href="#为模块创建配置" class="headerlink" title="为模块创建配置"></a>为模块创建配置</h2><p>假设我们有一个名为MyModule的模块，它有一些配置属性。首先，我们为这些可配置的属性创建一个类:</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public class MyModuleConfig</span><br><span class="line">&#123;</span><br><span class="line">    public bool SampleConfig1 &#123; get; set; &#125;</span><br><span class="line"></span><br><span class="line">    public string SampleConfig2 &#123; get; set; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>然后我们通过依赖注入注册这个类在MyModule的PreInitialize方法上(因此，它将是可注入的):</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">IocManager.Register&lt;MyModuleConfig&gt;();</span><br></pre></td></tr></table></figure>
-<p>它应该像本例中那样被注册为单例。我们现在可以使用以下代码在我们的模块的PreInitialize方法中配置MyModule:</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Configuration.Get&lt;MyModuleConfig&gt;().SampleConfig1 &#x3D; false;</span><br></pre></td></tr></table></figure>
-
-<h2 id="使用扩展方法配置"><a href="#使用扩展方法配置" class="headerlink" title="使用扩展方法配置"></a>使用扩展方法配置</h2><p>我们可以使用IAbpStartupConfiguration.Get方法，可以为IModuleConfigurations创建一个扩展方法，如下所示:</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public static class MyModuleConfigurationExtensions</span><br><span class="line">&#123;</span><br><span class="line">    public static MyModuleConfig MyModule(this IModuleConfigurations moduleConfigurations)</span><br><span class="line">    &#123;</span><br><span class="line">        return moduleConfigurations.AbpConfiguration.Get&lt;MyModuleConfig&gt;();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>现在其他模块可以配置这个模块使用扩展方法:</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Configuration.Modules.MyModule().SampleConfig1 &#x3D; false;</span><br><span class="line">Configuration.Modules.MyModule().SampleConfig2 &#x3D; &quot;test&quot;;</span><br></pre></td></tr></table></figure>
-<p>这使得研究模块配置并将其收集到单个位置(Configuration.Modules…)变得很容易。ABP本身为自己的模块配置定义了扩展方法。</p>
-<h2 id="配置使用注入"><a href="#配置使用注入" class="headerlink" title="配置使用注入"></a>配置使用注入</h2><p>在某种程度上，MyModule需要这个配置。您可以注入MyModuleConfig并使用配置的值。例子:</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public class MyService : ITransientDependency</span><br><span class="line">&#123;</span><br><span class="line">    private readonly MyModuleConfig _configuration;</span><br><span class="line"></span><br><span class="line">    public MyService(MyModuleConfig configuration)</span><br><span class="line">    &#123;</span><br><span class="line">        _configuration &#x3D; configuration;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void DoIt()</span><br><span class="line">    &#123;</span><br><span class="line">        if (_configuration.SampleConfig2 &#x3D;&#x3D; &quot;test&quot;)</span><br><span class="line">        &#123;</span><br><span class="line">            &#x2F;&#x2F;...</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>通过这种方式，模块可以在ABP系统创建中心配置点。</p>
-]]></content>
-      <categories>
-        <category>ABP</category>
-      </categories>
-      <tags>
-        <tag>ABP</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>什么是ABP(ASP.NET Boilerplate)</title>
-    <url>/2020/03/21/1.1%E4%BB%80%E4%B9%88%E6%98%AFABP/</url>
-    <content><![CDATA[<h2 id="What-is-the-ASP-NET-Boilerplate"><a href="#What-is-the-ASP-NET-Boilerplate" class="headerlink" title="What is the ASP.NET Boilerplate?"></a>What is the ASP.NET Boilerplate?</h2><p>ASP.NET Boilerplate (ABP) 是一个开源的、具有完善说明文档的应用架构.它不只是一个架构，它同样提供了一类强大的基于领取驱动设计的、结合作者最佳实践的结构模型。</p>
-<p>ABP支持使用最新的 ASP.NET Core &amp; EF Core,亦支持ASP.NET MVC 5.x &amp; EF 6.x.</p>
-<h2 id="A-Quick-Sample"><a href="#A-Quick-Sample" class="headerlink" title="A Quick Sample"></a>A Quick Sample</h2><p>让我们通过一个简单的示例来看看ABP的优点：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public class TaskAppService : ApplicationService, ITaskAppService</span><br><span class="line">&#123;</span><br><span class="line">    private readonly IRepository&lt;Task&gt; _taskRepository;</span><br><span class="line"></span><br><span class="line">    public TaskAppService(IRepository&lt;Task&gt; taskRepository)</span><br><span class="line">    &#123;</span><br><span class="line">        _taskRepository &#x3D; taskRepository;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    [AbpAuthorize(MyPermissions.UpdateTasks)]</span><br><span class="line">    public async Task UpdateTask(UpdateTaskInput input)</span><br><span class="line">    &#123;</span><br><span class="line">        Logger.Info(&quot;Updating a task for input: &quot; + input);</span><br><span class="line"></span><br><span class="line">        var task &#x3D; await _taskRepository.FirstOrDefaultAsync(input.TaskId);</span><br><span class="line">        if (task &#x3D;&#x3D; null)</span><br><span class="line">        &#123;</span><br><span class="line">            throw new UserFriendlyException(L(&quot;CouldNotFindTheTaskMessage&quot;));</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        ObjectMapper.MapTo(input, task);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>我们来看一个简单的应用服务方法。在领域驱动模式中，一个应用服务可以直接被表现层调用，来实现应用功能。把 <strong>UpdateTask</strong> 想做一个能够被JS或者Ajax调用的方法。</p>
-<p>让我们来看一下ABP的优点：</p>
-<ul>
-<li><p><strong>依赖注入</strong>：ABP使用并提供传统的依赖注入的方式。因为上述class是一个应用服务(Application Service)，他被短时间内注入到容器中。这可以轻松实现注入和依赖(例如示例中的 IRepository<Task> )。</p>
-</li>
-<li><p><strong>仓储</strong>:ABP可以为每个实体建立一个仓库(例如示例中的IRepository<Task>)。默认仓库中有许多有用的方法，例如示例中的FirstOrDefault。我们可以扩展默认的仓库来适应我们的需求。仓库抽象了DBMS和ORMs，简化了数据访问逻辑。</p>
-</li>
-<li><p><strong>授权</strong>:ABP能够声明式的检查权限。这可以防止没有update tasks权限或者没有登录的用户访问UpdateTask方法。ABP不只可以使用声明式的特性(Attribute)，还有其他的授权方式。</p>
-</li>
-<li><p><strong>验证</strong>:ABP自动检查输入是否为null。它也会根据用户自定义的验证规则或者标准注释特性，来检查输入的内容。如果请求未通过，会抛出对应的验证异常，可在客户端处理。</p>
-</li>
-<li><p><strong>审计日志</strong>:每一个用户请求，都会按照惯例或者基于用户配置，自动的保存对应信息。包括但不限于：用户、浏览器、IP地址、请求服务、方法、参数、请求时间、执行时间还有一些其他的信息。</p>
-</li>
-<li><p><strong>工作单元</strong>:在ABP中，每一个应用服务中的方法，默认都会被设定为一个工作单元。这会自动的建立连接，并且在方法开始使用之前，开启一个事务。如果方法成功的完成，并且未抛出异常。那么事务就会被提交，连接释放。即使此方法中使用不同的仓库或者方法，他们亦是原子结构的(事务性)。实体的所有改动会在事务提交的时候自动保存。正如上例所说，我们根本不需要调用_repository.Update(task)(更新实体方法)即可完成修改.</p>
-</li>
-<li><p><strong>异常处理</strong>:使用ABP的web应用中，我们几乎不用手动处理异常。所有的异常默认自动被处理。当一个异常抛出时，ABP自动将其记录到日志，并且返回一个适当的结果到客户端。例如，如果这是一个AJAX请求，它返回一个json对象到客户端，告诉客户端产生了一个错误。它对客户端隐藏了实际的异常信息，除非如例子中所示，此异常是一个UserFriendlyException。它也理解并处理来自客户端的异常，对用户显示适当的信息。</p>
-</li>
-<li><p><strong>日志</strong>:如你所见，我们可以使用在基础class中定义的Logger对象来记录日志。日志组件默认使用的是Log4Net，这是可配置和替换的。</p>
-</li>
-<li><p><strong>多语言(本地化)</strong>：是否注意到我们在抛出异常的时候，使用了’L’方法？通过这个方法，基于用户的文化自动的进行本地化（多语言切换）。想要了解更多请查看本地化文档。</p>
-</li>
-<li><p><strong>自动映射</strong>：在方法的末尾，我们使用ABP的IObjectMapper类中的MapTo方法，映射输入。从一个实体属性到另一个实体的属性。这使用了AutoMapper库来实现映射。我们可以基于命名规则，轻松地映射一个对象的属性到另一个对象中。</p>
-</li>
-<li><p><strong>动态API层</strong>:事实上TaskAppService是一个简单的class。我们通常封装一个API Controller来把方法提供给JS客户端，但是ABP在运行时自动的做到了这一部分。用这种方式，我么你可以直接在客户端调用应用服务中的方法。</p>
-</li>
-<li><p><strong>动态JS AJAX Proxy</strong>:ABP建立了代理方法，使得在在客户端调用应用服务方法，像在客户端调用JS方法一样方便。<br>我们可以通过示例看到ABP的优点。通常这些工作会占用大量时间，但是框架自动处理他们。<br>除了这个简单的示例之外，ABP提供了一个强大的基础设施和开发模式，包括模块化、多租户、缓存、后台任务、数据过滤、设置管理、领域事件、单元测试&amp;集成测试等等…你要做的就是专注于业务代码而非重复工作。</p>
-</li>
-</ul>
-<h2 id="Getting-Started"><a href="#Getting-Started" class="headerlink" title="Getting Started"></a>Getting Started</h2><p>你可以从启动模板和教程介绍开始</p>
-<h2 id="启动模板"><a href="#启动模板" class="headerlink" title="启动模板"></a>启动模板</h2><p>直接使用启动模板创建一个具有时尚外观的启动项目<br><img src="https://raw.githubusercontent.com/aspnetboilerplate/aspnetboilerplate/master/doc/WebSite/images/module-zero-core-template-ui-home.png" alt="示例"></p>
-<p>启动模板提供了一个基础的布局和一些应用常见功能。有多个<a href="https://aspnetboilerplate.com/Pages/Documents" target="_blank" rel="noopener">启动模板</a>可供选择。</p>
-<h2 id="说明文档"><a href="#说明文档" class="headerlink" title="说明文档"></a>说明文档</h2><p>教程介绍了框架，并解释了如何创建您的应用程序基于启动模板</p>
-<h2 id="社区"><a href="#社区" class="headerlink" title="社区"></a>社区</h2><p>Use the <a href="https://github.com/aspnetboilerplate/aspnetboilerplate" target="_blank" rel="noopener">GitHub repository</a> to access the latest source code, create issues and send pull requests.<br>Use <a href="https://stackoverflow.com/questions/tagged/aspnetboilerplate" target="_blank" rel="noopener">aspnetboilerplate tag</a> on stackoverflow to ask questions about the usage.<br>Follow <a href="https://twitter.com/aspboilerplate" target="_blank" rel="noopener">aspboilerplate</a> on twitter to be informed about the happenings.</p>
-]]></content>
-      <categories>
-        <category>ABP</category>
-      </categories>
-      <tags>
-        <tag>ABP</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>多层架构</title>
     <url>/2020/03/21/1.2%E5%A4%9A%E5%B1%82%E6%9E%B6%E6%9E%84/</url>
     <content><![CDATA[<h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><p>应用程序的代码分层是一个被广泛接受的技术，用来降低代码复杂性、提升重用性。为了实现分层架构，ABP遵循领域驱动设计（DDD）的准则。</p>
@@ -146,6 +61,91 @@
       </tags>
   </entry>
   <entry>
+    <title>什么是ABP(ASP.NET Boilerplate)</title>
+    <url>/2020/03/21/1.1%E4%BB%80%E4%B9%88%E6%98%AFABP/</url>
+    <content><![CDATA[<h2 id="What-is-the-ASP-NET-Boilerplate"><a href="#What-is-the-ASP-NET-Boilerplate" class="headerlink" title="What is the ASP.NET Boilerplate?"></a>What is the ASP.NET Boilerplate?</h2><p>ASP.NET Boilerplate (ABP) 是一个开源的、具有完善说明文档的应用架构.它不只是一个架构，它同样提供了一类强大的基于领取驱动设计的、结合作者最佳实践的结构模型。</p>
+<p>ABP支持使用最新的 ASP.NET Core &amp; EF Core,亦支持ASP.NET MVC 5.x &amp; EF 6.x.</p>
+<h2 id="A-Quick-Sample"><a href="#A-Quick-Sample" class="headerlink" title="A Quick Sample"></a>A Quick Sample</h2><p>让我们通过一个简单的示例来看看ABP的优点：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public class TaskAppService : ApplicationService, ITaskAppService</span><br><span class="line">&#123;</span><br><span class="line">    private readonly IRepository&lt;Task&gt; _taskRepository;</span><br><span class="line"></span><br><span class="line">    public TaskAppService(IRepository&lt;Task&gt; taskRepository)</span><br><span class="line">    &#123;</span><br><span class="line">        _taskRepository &#x3D; taskRepository;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    [AbpAuthorize(MyPermissions.UpdateTasks)]</span><br><span class="line">    public async Task UpdateTask(UpdateTaskInput input)</span><br><span class="line">    &#123;</span><br><span class="line">        Logger.Info(&quot;Updating a task for input: &quot; + input);</span><br><span class="line"></span><br><span class="line">        var task &#x3D; await _taskRepository.FirstOrDefaultAsync(input.TaskId);</span><br><span class="line">        if (task &#x3D;&#x3D; null)</span><br><span class="line">        &#123;</span><br><span class="line">            throw new UserFriendlyException(L(&quot;CouldNotFindTheTaskMessage&quot;));</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        ObjectMapper.MapTo(input, task);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们来看一个简单的应用服务方法。在领域驱动模式中，一个应用服务可以直接被表现层调用，来实现应用功能。把 <strong>UpdateTask</strong> 想做一个能够被JS或者Ajax调用的方法。</p>
+<p>让我们来看一下ABP的优点：</p>
+<ul>
+<li><p><strong>依赖注入</strong>：ABP使用并提供传统的依赖注入的方式。因为上述class是一个应用服务(Application Service)，他被短时间内注入到容器中。这可以轻松实现注入和依赖(例如示例中的 IRepository<Task> )。</p>
+</li>
+<li><p><strong>仓储</strong>:ABP可以为每个实体建立一个仓库(例如示例中的IRepository<Task>)。默认仓库中有许多有用的方法，例如示例中的FirstOrDefault。我们可以扩展默认的仓库来适应我们的需求。仓库抽象了DBMS和ORMs，简化了数据访问逻辑。</p>
+</li>
+<li><p><strong>授权</strong>:ABP能够声明式的检查权限。这可以防止没有update tasks权限或者没有登录的用户访问UpdateTask方法。ABP不只可以使用声明式的特性(Attribute)，还有其他的授权方式。</p>
+</li>
+<li><p><strong>验证</strong>:ABP自动检查输入是否为null。它也会根据用户自定义的验证规则或者标准注释特性，来检查输入的内容。如果请求未通过，会抛出对应的验证异常，可在客户端处理。</p>
+</li>
+<li><p><strong>审计日志</strong>:每一个用户请求，都会按照惯例或者基于用户配置，自动的保存对应信息。包括但不限于：用户、浏览器、IP地址、请求服务、方法、参数、请求时间、执行时间还有一些其他的信息。</p>
+</li>
+<li><p><strong>工作单元</strong>:在ABP中，每一个应用服务中的方法，默认都会被设定为一个工作单元。这会自动的建立连接，并且在方法开始使用之前，开启一个事务。如果方法成功的完成，并且未抛出异常。那么事务就会被提交，连接释放。即使此方法中使用不同的仓库或者方法，他们亦是原子结构的(事务性)。实体的所有改动会在事务提交的时候自动保存。正如上例所说，我们根本不需要调用_repository.Update(task)(更新实体方法)即可完成修改.</p>
+</li>
+<li><p><strong>异常处理</strong>:使用ABP的web应用中，我们几乎不用手动处理异常。所有的异常默认自动被处理。当一个异常抛出时，ABP自动将其记录到日志，并且返回一个适当的结果到客户端。例如，如果这是一个AJAX请求，它返回一个json对象到客户端，告诉客户端产生了一个错误。它对客户端隐藏了实际的异常信息，除非如例子中所示，此异常是一个UserFriendlyException。它也理解并处理来自客户端的异常，对用户显示适当的信息。</p>
+</li>
+<li><p><strong>日志</strong>:如你所见，我们可以使用在基础class中定义的Logger对象来记录日志。日志组件默认使用的是Log4Net，这是可配置和替换的。</p>
+</li>
+<li><p><strong>多语言(本地化)</strong>：是否注意到我们在抛出异常的时候，使用了’L’方法？通过这个方法，基于用户的文化自动的进行本地化（多语言切换）。想要了解更多请查看本地化文档。</p>
+</li>
+<li><p><strong>自动映射</strong>：在方法的末尾，我们使用ABP的IObjectMapper类中的MapTo方法，映射输入。从一个实体属性到另一个实体的属性。这使用了AutoMapper库来实现映射。我们可以基于命名规则，轻松地映射一个对象的属性到另一个对象中。</p>
+</li>
+<li><p><strong>动态API层</strong>:事实上TaskAppService是一个简单的class。我们通常封装一个API Controller来把方法提供给JS客户端，但是ABP在运行时自动的做到了这一部分。用这种方式，我么你可以直接在客户端调用应用服务中的方法。</p>
+</li>
+<li><p><strong>动态JS AJAX Proxy</strong>:ABP建立了代理方法，使得在在客户端调用应用服务方法，像在客户端调用JS方法一样方便。<br>我们可以通过示例看到ABP的优点。通常这些工作会占用大量时间，但是框架自动处理他们。<br>除了这个简单的示例之外，ABP提供了一个强大的基础设施和开发模式，包括模块化、多租户、缓存、后台任务、数据过滤、设置管理、领域事件、单元测试&amp;集成测试等等…你要做的就是专注于业务代码而非重复工作。</p>
+</li>
+</ul>
+<h2 id="Getting-Started"><a href="#Getting-Started" class="headerlink" title="Getting Started"></a>Getting Started</h2><p>你可以从启动模板和教程介绍开始</p>
+<h2 id="启动模板"><a href="#启动模板" class="headerlink" title="启动模板"></a>启动模板</h2><p>直接使用启动模板创建一个具有时尚外观的启动项目<br><img src="https://raw.githubusercontent.com/aspnetboilerplate/aspnetboilerplate/master/doc/WebSite/images/module-zero-core-template-ui-home.png" alt="示例"></p>
+<p>启动模板提供了一个基础的布局和一些应用常见功能。有多个<a href="https://aspnetboilerplate.com/Pages/Documents" target="_blank" rel="noopener">启动模板</a>可供选择。</p>
+<h2 id="说明文档"><a href="#说明文档" class="headerlink" title="说明文档"></a>说明文档</h2><p>教程介绍了框架，并解释了如何创建您的应用程序基于启动模板</p>
+<h2 id="社区"><a href="#社区" class="headerlink" title="社区"></a>社区</h2><p>Use the <a href="https://github.com/aspnetboilerplate/aspnetboilerplate" target="_blank" rel="noopener">GitHub repository</a> to access the latest source code, create issues and send pull requests.<br>Use <a href="https://stackoverflow.com/questions/tagged/aspnetboilerplate" target="_blank" rel="noopener">aspnetboilerplate tag</a> on stackoverflow to ask questions about the usage.<br>Follow <a href="https://twitter.com/aspboilerplate" target="_blank" rel="noopener">aspboilerplate</a> on twitter to be informed about the happenings.</p>
+]]></content>
+      <categories>
+        <category>ABP</category>
+      </categories>
+      <tags>
+        <tag>ABP</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>启动配置</title>
+    <url>/2020/03/21/1.4%E5%90%AF%E5%8A%A8%E9%85%8D%E7%BD%AE/</url>
+    <content><![CDATA[<p>ABP提供启动时配置其模块的基础结构和模型。</p>
+<h2 id="配置ABP"><a href="#配置ABP" class="headerlink" title="配置ABP"></a>配置ABP</h2><p>在模块的预初始化方法中配置ABP。例如：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public class SimpleTaskSystemModule : AbpModule</span><br><span class="line">&#123;</span><br><span class="line">    public override void PreInitialize()</span><br><span class="line">    &#123;</span><br><span class="line">        &#x2F;&#x2F;Add languages for your application</span><br><span class="line">        Configuration.Localization.Languages.Add(new LanguageInfo(&quot;en&quot;, &quot;English&quot;, &quot;famfamfam-flag-england&quot;, true));</span><br><span class="line">        Configuration.Localization.Languages.Add(new LanguageInfo(&quot;tr&quot;, &quot;Türkçe&quot;, &quot;famfamfam-flag-tr&quot;));</span><br><span class="line"></span><br><span class="line">        &#x2F;&#x2F;Add a localization source</span><br><span class="line">        Configuration.Localization.Sources.Add(</span><br><span class="line">            new XmlLocalizationSource(</span><br><span class="line">                &quot;SimpleTaskSystem&quot;,</span><br><span class="line">                HttpContext.Current.Server.MapPath(&quot;~&#x2F;Localization&#x2F;SimpleTaskSystem&quot;)</span><br><span class="line">                )</span><br><span class="line">            );</span><br><span class="line"></span><br><span class="line">        &#x2F;&#x2F;Configure navigation&#x2F;menu</span><br><span class="line">        Configuration.Navigation.Providers.Add&lt;SimpleTaskSystemNavigationProvider&gt;();        </span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public override void Initialize()</span><br><span class="line">    &#123;</span><br><span class="line">        IocManager.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>ABP在设计时考虑了模块化。不同的模块可以配置ABP。例如，不同的模块可以添加导航提供程序来将它们自己的菜单项添加到主菜单。(有关配置的详细信息，请参阅本地化和导航文档)。</p>
+<h2 id="取代内置的服务"><a href="#取代内置的服务" class="headerlink" title="取代内置的服务"></a>取代内置的服务</h2><p>Configuration.ReplaceService方法可用于覆盖内置服务。例如，您可以使用自定义实现替换IAbpSession服务，如下所示:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Configuration.ReplaceService&lt;IAbpSession, MySession&gt;(DependencyLifeStyle.Transient);</span><br></pre></td></tr></table></figure>
+<p>ReplaceService方法有一个重载，它通过一个动作以自定义的方式进行替换(您可以直接使用具有高级注册API的Castle Windsor)。</p>
+<h2 id="配置模块"><a href="#配置模块" class="headerlink" title="配置模块"></a>配置模块</h2><p>除了框架自己的启动配置外，模块还可以扩展IAbpModuleConfigurations接口来为模块提供配置点。例子:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">...</span><br><span class="line">using Abp.Web.Configuration;</span><br><span class="line">...</span><br><span class="line">public override void PreInitialize()</span><br><span class="line">&#123;</span><br><span class="line">    Configuration.Modules.AbpWebCommon().SendAllExceptionsToClients &#x3D; true;</span><br><span class="line">&#125;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>在本例中，我们将AbpWebCommon模块配置为将所有异常发送到客户端。<br>不是每个模块都应该定义这种类型的配置。当一个模块需要在不同的应用程序中重用，并且需要在启动时进行配置时，通常需要使用它。</p>
+<h2 id="为模块创建配置"><a href="#为模块创建配置" class="headerlink" title="为模块创建配置"></a>为模块创建配置</h2><p>假设我们有一个名为MyModule的模块，它有一些配置属性。首先，我们为这些可配置的属性创建一个类:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public class MyModuleConfig</span><br><span class="line">&#123;</span><br><span class="line">    public bool SampleConfig1 &#123; get; set; &#125;</span><br><span class="line"></span><br><span class="line">    public string SampleConfig2 &#123; get; set; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后我们通过依赖注入注册这个类在MyModule的PreInitialize方法上(因此，它将是可注入的):</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">IocManager.Register&lt;MyModuleConfig&gt;();</span><br></pre></td></tr></table></figure>
+<p>它应该像本例中那样被注册为单例。我们现在可以使用以下代码在我们的模块的PreInitialize方法中配置MyModule:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Configuration.Get&lt;MyModuleConfig&gt;().SampleConfig1 &#x3D; false;</span><br></pre></td></tr></table></figure>
+
+<h2 id="使用扩展方法配置"><a href="#使用扩展方法配置" class="headerlink" title="使用扩展方法配置"></a>使用扩展方法配置</h2><p>我们可以使用IAbpStartupConfiguration.Get方法，可以为IModuleConfigurations创建一个扩展方法，如下所示:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public static class MyModuleConfigurationExtensions</span><br><span class="line">&#123;</span><br><span class="line">    public static MyModuleConfig MyModule(this IModuleConfigurations moduleConfigurations)</span><br><span class="line">    &#123;</span><br><span class="line">        return moduleConfigurations.AbpConfiguration.Get&lt;MyModuleConfig&gt;();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>现在其他模块可以配置这个模块使用扩展方法:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Configuration.Modules.MyModule().SampleConfig1 &#x3D; false;</span><br><span class="line">Configuration.Modules.MyModule().SampleConfig2 &#x3D; &quot;test&quot;;</span><br></pre></td></tr></table></figure>
+<p>这使得研究模块配置并将其收集到单个位置(Configuration.Modules…)变得很容易。ABP本身为自己的模块配置定义了扩展方法。</p>
+<h2 id="配置使用注入"><a href="#配置使用注入" class="headerlink" title="配置使用注入"></a>配置使用注入</h2><p>在某种程度上，MyModule需要这个配置。您可以注入MyModuleConfig并使用配置的值。例子:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public class MyService : ITransientDependency</span><br><span class="line">&#123;</span><br><span class="line">    private readonly MyModuleConfig _configuration;</span><br><span class="line"></span><br><span class="line">    public MyService(MyModuleConfig configuration)</span><br><span class="line">    &#123;</span><br><span class="line">        _configuration &#x3D; configuration;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void DoIt()</span><br><span class="line">    &#123;</span><br><span class="line">        if (_configuration.SampleConfig2 &#x3D;&#x3D; &quot;test&quot;)</span><br><span class="line">        &#123;</span><br><span class="line">            &#x2F;&#x2F;...</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>通过这种方式，模块可以在ABP系统创建中心配置点。</p>
+]]></content>
+      <categories>
+        <category>ABP</category>
+      </categories>
+      <tags>
+        <tag>ABP</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>OWIN集成</title>
     <url>/2020/03/21/1.6owin%E9%9B%86%E6%88%90/</url>
     <content><![CDATA[<p>如果你同时使用ASP.NET MVC和ASP.NET Web API在您的应用程序中，您需要将Abp.Owin NuGet包添加到您的项目中。</p>
@@ -176,28 +176,6 @@
       </tags>
   </entry>
   <entry>
-    <title>1106 Lowest Price in Supply Chain</title>
-    <url>/2020/03/31/1106LowestPriceInSupplyChain/</url>
-    <content><![CDATA[<h5 id="N-lt-10-10，可以使用vector二维数组存储数据"><a href="#N-lt-10-10，可以使用vector二维数组存储数据" class="headerlink" title="N&lt;10^10，可以使用vector二维数组存储数据"></a>N&lt;10^10，可以使用vector二维数组存储数据</h5><h5 id="万一末尾节点没有零售商？没有在考虑范围内，按照结果来看，零售商应该是叶子节点"><a href="#万一末尾节点没有零售商？没有在考虑范围内，按照结果来看，零售商应该是叶子节点" class="headerlink" title="万一末尾节点没有零售商？没有在考虑范围内，按照结果来看，零售商应该是叶子节点"></a>万一末尾节点没有零售商？没有在考虑范围内，按照结果来看，零售商应该是叶子节点</h5><h5 id="mindep表示层数-num表示叶节点个数"><a href="#mindep表示层数-num表示叶节点个数" class="headerlink" title="mindep表示层数  num表示叶节点个数"></a>mindep表示层数  num表示叶节点个数</h5><h5 id="需要注意结果精确位数"><a href="#需要注意结果精确位数" class="headerlink" title="需要注意结果精确位数"></a>需要注意结果精确位数</h5><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#include &lt;cstdio&gt;</span><br><span class="line">#include &lt;vector&gt;</span><br><span class="line">#include &lt;cmath&gt;</span><br><span class="line"></span><br><span class="line">using namespace std;</span><br><span class="line"></span><br><span class="line">int n;&#x2F;&#x2F;节点数</span><br><span class="line">vector&lt;int&gt; arr[100000];</span><br><span class="line">int mindep &#x3D; 99999999;</span><br><span class="line">int num&#x3D;1;</span><br><span class="line"></span><br><span class="line">void DFS(int root,int depth)</span><br><span class="line">&#123;</span><br><span class="line">    if(mindep&lt;depth)</span><br><span class="line">        return;</span><br><span class="line">    if(arr[root].size() &#x3D;&#x3D; 0)</span><br><span class="line">    &#123;</span><br><span class="line">        if(mindep&gt;depth)</span><br><span class="line">        &#123;</span><br><span class="line">            mindep &#x3D; depth;</span><br><span class="line">            num &#x3D;1;</span><br><span class="line">        &#125;</span><br><span class="line">        else if(mindep&#x3D;&#x3D; depth)</span><br><span class="line">        &#123;</span><br><span class="line">            num++;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    for(int i&#x3D;0; i&lt;arr[root].size(); i++)</span><br><span class="line">    &#123;</span><br><span class="line">        DFS(arr[root][i],depth+1);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">    int n;</span><br><span class="line">    double p,r;</span><br><span class="line">    scanf(&quot;%d %lf %lf&quot;,&amp;n,&amp;p,&amp;r);</span><br><span class="line">    for(int i&#x3D;0; i&lt;n; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        int ln;</span><br><span class="line">        scanf(&quot;%d&quot;,&amp;ln);</span><br><span class="line"></span><br><span class="line">        for(int j&#x3D;0; j&lt;ln; j++)</span><br><span class="line">        &#123;</span><br><span class="line">            int index;</span><br><span class="line">            scanf(&quot;%d&quot;,&amp;index);</span><br><span class="line">            arr[i].push_back(index);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    DFS(0,0);&#x2F;&#x2F;获取树</span><br><span class="line"></span><br><span class="line">    printf(&quot;%.4f %d&quot;,p*pow((1+r&#x2F;100),mindep),num);</span><br><span class="line"></span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>pta</category>
-      </categories>
-      <tags>
-        <tag>pta</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>1115 Counting Nodes in a BST</title>
-    <url>/2020/03/31/1115CountingNodesInBST/</url>
-    <content><![CDATA[<h5 id="分析：左子树小于父节点，右子树大于父节点"><a href="#分析：左子树小于父节点，右子树大于父节点" class="headerlink" title="分析：左子树小于父节点，右子树大于父节点"></a>分析：左子树小于父节点，右子树大于父节点</h5><h5 id="链表存储自定义节点，存储bst，递归构建"><a href="#链表存储自定义节点，存储bst，递归构建" class="headerlink" title="链表存储自定义节点，存储bst，递归构建"></a>链表存储自定义节点，存储bst，递归构建</h5><h5 id="由根节点开始，dfs节点，并累计不同深度的系欸但数量"><a href="#由根节点开始，dfs节点，并累计不同深度的系欸但数量" class="headerlink" title="由根节点开始，dfs节点，并累计不同深度的系欸但数量"></a>由根节点开始，dfs节点，并累计不同深度的系欸但数量</h5><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#include &lt;iostream&gt;</span><br><span class="line">#include &lt;vector&gt;</span><br><span class="line"></span><br><span class="line">using namespace std;</span><br><span class="line">int n;&#x2F;&#x2F;&lt;&#x3D;1000</span><br><span class="line">struct Node</span><br><span class="line">&#123;</span><br><span class="line">    int value;</span><br><span class="line">    struct Node *left,*right;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">Node* Build(struct Node *root,int value)</span><br><span class="line">&#123;</span><br><span class="line">    if(root&#x3D;&#x3D;NULL)</span><br><span class="line">    &#123;</span><br><span class="line">        root &#x3D; new Node();</span><br><span class="line">        root-&gt;value &#x3D; value;</span><br><span class="line">        root-&gt;left &#x3D; NULL;</span><br><span class="line">        root-&gt;right &#x3D; NULL;</span><br><span class="line">    &#125;</span><br><span class="line">    else if(value &lt;&#x3D; root-&gt;value)</span><br><span class="line">    &#123;</span><br><span class="line">        root-&gt;left&#x3D;  Build(root-&gt;left,value);</span><br><span class="line">    &#125;</span><br><span class="line">    else</span><br><span class="line">    &#123;</span><br><span class="line">        root-&gt;right &#x3D; Build(root-&gt;right,value);</span><br><span class="line">    &#125;</span><br><span class="line">    return root;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">vector&lt;int&gt; arr(1001);</span><br><span class="line">int maxDepth &#x3D; 0;</span><br><span class="line"></span><br><span class="line">void DFS(struct Node *root,int depth)</span><br><span class="line">&#123;</span><br><span class="line">    if(root&#x3D;&#x3D;NULL)</span><br><span class="line">    &#123;</span><br><span class="line">        maxDepth &#x3D; max(maxDepth,depth);</span><br><span class="line">        return ;</span><br><span class="line">    &#125;</span><br><span class="line">    arr[depth]++;</span><br><span class="line">    DFS(root-&gt;left,depth+1);</span><br><span class="line">    DFS(root-&gt;right,depth+1);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">    cin&gt;&gt;n;</span><br><span class="line">    int t;</span><br><span class="line">    Node *root &#x3D; NULL;</span><br><span class="line">    for(int i&#x3D;1; i&lt;&#x3D;n; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        cin&gt;&gt;t;</span><br><span class="line">        root &#x3D; Build(root,t);</span><br><span class="line">    &#125;</span><br><span class="line">    DFS(root,1);</span><br><span class="line">    int b &#x3D; arr[maxDepth-1];</span><br><span class="line">    int a &#x3D; arr[maxDepth-2];</span><br><span class="line"></span><br><span class="line">    for(int i&#x3D;0;i&lt;arr.size();i++)</span><br><span class="line">    &#123;</span><br><span class="line">        cout&lt;&lt;arr[i]&lt;&lt;endl;</span><br><span class="line">    &#125;</span><br><span class="line">    printf(&quot;%d + %d &#x3D; %d&quot;,b,a,a+b);</span><br><span class="line"></span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>pta</category>
-      </categories>
-      <tags>
-        <tag>pta</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>1110 Complete Binary Tree</title>
     <url>/2020/03/31/1110CompleteBinaryTree/</url>
     <content><![CDATA[<h5 id="分析：每次可以获得一个-坐标-和左子树坐标和右子树坐标"><a href="#分析：每次可以获得一个-坐标-和左子树坐标和右子树坐标" class="headerlink" title="分析：每次可以获得一个 坐标 和左子树坐标和右子树坐标"></a>分析：每次可以获得一个 坐标 和左子树坐标和右子树坐标</h5><h5 id="判断是否是完全二叉树-是-返回树的最后一个节点坐标"><a href="#判断是否是完全二叉树-是-返回树的最后一个节点坐标" class="headerlink" title="判断是否是完全二叉树 是:返回树的最后一个节点坐标"></a>判断是否是完全二叉树 是:返回树的最后一个节点坐标</h5><h5 id="否-返回root坐标"><a href="#否-返回root坐标" class="headerlink" title="否:返回root坐标"></a>否:返回root坐标</h5><h5 id="gt-如何根据给定的数据，把数据构建成树"><a href="#gt-如何根据给定的数据，把数据构建成树" class="headerlink" title="=&gt; 如何根据给定的数据，把数据构建成树"></a>=&gt; 如何根据给定的数据，把数据构建成树</h5><h5 id="一个数组hasvalue-n-，根据输入结果判断是否是1，若1-n某一点不为1，即为根节点"><a href="#一个数组hasvalue-n-，根据输入结果判断是否是1，若1-n某一点不为1，即为根节点" class="headerlink" title="一个数组hasvalue[n]，根据输入结果判断是否是1，若1-n某一点不为1，即为根节点"></a>一个数组hasvalue[n]，根据输入结果判断是否是1，若1-n某一点不为1，即为根节点</h5><h5 id="一个二维数组存储输入值"><a href="#一个二维数组存储输入值" class="headerlink" title="一个二维数组存储输入值"></a>一个二维数组存储输入值</h5><h5 id="若为完全二叉树，dfs后得的最大元素index会比节点总数大"><a href="#若为完全二叉树，dfs后得的最大元素index会比节点总数大" class="headerlink" title="若为完全二叉树，dfs后得的最大元素index会比节点总数大"></a>若为完全二叉树，dfs后得的最大元素index会比节点总数大</h5><h5 id=""><a href="#" class="headerlink" title=""></a></h5><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#include &lt;iostream&gt;</span><br><span class="line"></span><br><span class="line">using namespace std;</span><br><span class="line">int n;</span><br><span class="line">int arr[100][2];</span><br><span class="line">int maxn &#x3D; 0;&#x2F;&#x2F;最大index</span><br><span class="line">int ans;&#x2F;&#x2F;最大节点值在数组的index</span><br><span class="line"></span><br><span class="line">void DFS(int root,int index)</span><br><span class="line">&#123;</span><br><span class="line">    if(index&gt;maxn)</span><br><span class="line">    &#123;</span><br><span class="line">        maxn &#x3D; index;</span><br><span class="line">        ans &#x3D; root;</span><br><span class="line">    &#125;</span><br><span class="line">    if(arr[root][0]!&#x3D; -1)</span><br><span class="line">        DFS(arr[root][0],index *2);</span><br><span class="line">    if(arr[root][1]!&#x3D; -1)</span><br><span class="line">        DFS(arr[root][1],index *2+1);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">    cin&gt;&gt;n;</span><br><span class="line">    int root &#x3D; 0;</span><br><span class="line">    int hasvalue[100] &#x3D; &#123;0&#125;;</span><br><span class="line"></span><br><span class="line">    string left,right;</span><br><span class="line">    for(int i&#x3D;0; i&lt;n; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        cin&gt;&gt;left&gt;&gt;right;</span><br><span class="line">        if(left&#x3D;&#x3D;&quot;-&quot;)</span><br><span class="line">        &#123;</span><br><span class="line">            arr[i][0]&#x3D;-1;</span><br><span class="line">        &#125;</span><br><span class="line">        else</span><br><span class="line">        &#123;</span><br><span class="line">            arr[i][0] &#x3D; stoi(left);</span><br><span class="line">            hasvalue[arr[i][0]] &#x3D; 1;</span><br><span class="line">        &#125;</span><br><span class="line">        if(right&#x3D;&#x3D;&quot;-&quot;)</span><br><span class="line">        &#123;</span><br><span class="line">            arr[i][1]&#x3D;-1;</span><br><span class="line">        &#125;</span><br><span class="line">        else</span><br><span class="line">        &#123;</span><br><span class="line">            arr[i][1] &#x3D; stoi(right);</span><br><span class="line">            hasvalue[arr[i][1]] &#x3D; 1;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    while(hasvalue[root]!&#x3D;0)</span><br><span class="line">        root++;</span><br><span class="line">    DFS(root,1);</span><br><span class="line"></span><br><span class="line">    if(maxn&#x3D;&#x3D;n)</span><br><span class="line">    &#123;</span><br><span class="line">        printf(&quot;YES %d&quot;,ans);</span><br><span class="line">    &#125;</span><br><span class="line">    else</span><br><span class="line">    &#123;</span><br><span class="line">         printf(&quot;NO %d&quot;,root);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
@@ -223,17 +201,6 @@
     <title>1127 ZigZagging on a Tree</title>
     <url>/2020/03/31/1127ZigZaggingTree/</url>
     <content><![CDATA[<h5 id="分析：已知中序和后序，可得一个唯一的二叉树-对其按照层次，之字形输出结果"><a href="#分析：已知中序和后序，可得一个唯一的二叉树-对其按照层次，之字形输出结果" class="headerlink" title="分析：已知中序和后序，可得一个唯一的二叉树,对其按照层次，之字形输出结果"></a>分析：已知中序和后序，可得一个唯一的二叉树,对其按照层次，之字形输出结果</h5><h5 id="1-根据中序和后序建树，保存在二维数组中"><a href="#1-根据中序和后序建树，保存在二维数组中" class="headerlink" title="1.根据中序和后序建树，保存在二维数组中"></a>1.根据中序和后序建树，保存在二维数组中</h5><h5 id="2-层序遍历要使用队列来实现"><a href="#2-层序遍历要使用队列来实现" class="headerlink" title="2.层序遍历要使用队列来实现"></a>2.层序遍历要使用队列来实现</h5><h5 id="3-还需要一个二维数组来存储每层的结果，用来实现zigzag"><a href="#3-还需要一个二维数组来存储每层的结果，用来实现zigzag" class="headerlink" title="3.还需要一个二维数组来存储每层的结果，用来实现zigzag"></a>3.还需要一个二维数组来存储每层的结果，用来实现zigzag</h5><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;queue&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; in,post,result[<span class="number">35</span>];</span><br><span class="line"><span class="keyword">int</span> tree[<span class="number">35</span>][<span class="number">2</span>],n,rootIndex;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Node</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">int</span> index;</span><br><span class="line">    <span class="keyword">int</span> depth;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">dfs</span><span class="params">(<span class="keyword">int</span> &amp;index,<span class="keyword">int</span> inLeftIndex,<span class="keyword">int</span> inRightIndex,<span class="keyword">int</span> postLeftIndex,<span class="keyword">int</span> postRightIndex)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(inLeftIndex&gt;inRightIndex)</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    index = postRightIndex;</span><br><span class="line">    <span class="comment">//inIndex</span></span><br><span class="line">    <span class="keyword">int</span> i=<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span>(in[i]!=post[postRightIndex])</span><br><span class="line">        i++;</span><br><span class="line">    dfs(tree[index][<span class="number">0</span>],inLeftIndex,i<span class="number">-1</span>,postLeftIndex,index-(inRightIndex - i)<span class="number">-1</span>);</span><br><span class="line">    dfs(tree[index][<span class="number">1</span>],i+<span class="number">1</span>,inRightIndex,index-(inRightIndex - i),postRightIndex<span class="number">-1</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">bfs</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//使用队列，进行层序遍历</span></span><br><span class="line">    <span class="comment">//当前数组还是一个post的顺序，将其变为层序，保存到result中</span></span><br><span class="line">    <span class="built_in">queue</span>&lt;Node&gt; q ;</span><br><span class="line">    q.push(Node&#123;rootIndex,<span class="number">0</span>&#125;);</span><br><span class="line">    <span class="keyword">while</span>(!q.empty())</span><br><span class="line">    &#123;</span><br><span class="line">        Node node =  q.front();</span><br><span class="line">        q.pop();</span><br><span class="line">        result[node.depth].push_back(post[node.index]);</span><br><span class="line">        <span class="keyword">if</span>(tree[node.index][<span class="number">0</span>]!=<span class="number">0</span>)</span><br><span class="line">            q.push(Node&#123;tree[node.index][<span class="number">0</span>],node.depth+<span class="number">1</span>&#125;);</span><br><span class="line">        <span class="keyword">if</span>(tree[node.index][<span class="number">1</span>]!=<span class="number">0</span>)</span><br><span class="line">            q.push(Node&#123;tree[node.index][<span class="number">1</span>],node.depth+<span class="number">1</span>&#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">cin</span>&gt;&gt;n;</span><br><span class="line">    in.resize(n+<span class="number">1</span>);</span><br><span class="line">    post.resize(n+<span class="number">1</span>);</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>; i&lt;=n; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">cin</span>&gt;&gt;in[i];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>; i&lt;=n; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">cin</span>&gt;&gt;post[i];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//深搜获取唯一二叉树</span></span><br><span class="line">    dfs(rootIndex,<span class="number">1</span>,n,<span class="number">1</span> ,n);</span><br><span class="line">    <span class="comment">//广搜得到层次结构</span></span><br><span class="line">    bfs();</span><br><span class="line">    <span class="comment">//按要求输出</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%d"</span>,result[<span class="number">0</span>][<span class="number">0</span>]);</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;<span class="number">35</span>;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(i%<span class="number">2</span> ==<span class="number">1</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>;j&lt;result[i].<span class="built_in">size</span>();j++)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">" %d"</span>,result[i][j]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j=result[i].<span class="built_in">size</span>()<span class="number">-1</span>;j&gt;=<span class="number">0</span>;j--)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">" %d"</span>,result[i][j]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
-      <categories>
-        <category>pta</category>
-      </categories>
-      <tags>
-        <tag>pta</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>1135 1135RedBlackTree</title>
-    <url>/2020/03/31/1135RedBlackTree/</url>
-    <content><![CDATA[<h5 id="分析：判断给出的先序树是否是红黑树"><a href="#分析：判断给出的先序树是否是红黑树" class="headerlink" title="分析：判断给出的先序树是否是红黑树"></a>分析：判断给出的先序树是否是红黑树</h5><h5 id="这题好像有问题，为什么只给一个先序就可以直接对其进行判断了，连树的结构都没确定"><a href="#这题好像有问题，为什么只给一个先序就可以直接对其进行判断了，连树的结构都没确定" class="headerlink" title="这题好像有问题，为什么只给一个先序就可以直接对其进行判断了，连树的结构都没确定"></a>这题好像有问题，为什么只给一个先序就可以直接对其进行判断了，连树的结构都没确定</h5><h5 id="1-直接给出先序，采用链表存储"><a href="#1-直接给出先序，采用链表存储" class="headerlink" title="1.直接给出先序，采用链表存储"></a>1.直接给出先序，采用链表存储</h5><h5 id="2-考虑红黑树条件"><a href="#2-考虑红黑树条件" class="headerlink" title="2.考虑红黑树条件"></a>2.考虑红黑树条件</h5><h5 id="1-root为black，即-arr-0-gt-0"><a href="#1-root为black，即-arr-0-gt-0" class="headerlink" title="1) root为black，即 arr[0]&gt;0"></a>1) root为black，即 arr[0]&gt;0</h5><h5 id="2-arr-i-lt-0-则-arr-2i-1-和-arr-2i-都-gt-0"><a href="#2-arr-i-lt-0-则-arr-2i-1-和-arr-2i-都-gt-0" class="headerlink" title="2) arr[i]&lt;0,则 arr[2i+1]和 arr[2i]都&gt;0"></a>2) arr[i]&lt;0,则 arr[2i+1]和 arr[2i]都&gt;0</h5><h5 id="3-叶子节点（2i-gt-N）到root的路径，black-即-gt-0-的点要相等"><a href="#3-叶子节点（2i-gt-N）到root的路径，black-即-gt-0-的点要相等" class="headerlink" title="3) 叶子节点（2i&gt;N）到root的路径，black(即&gt;0)的点要相等"></a>3) 叶子节点（2i&gt;N）到root的路径，black(即&gt;0)的点要相等</h5><h2 id="懵了，不管"><a href="#懵了，不管" class="headerlink" title="懵了，不管"></a>懵了，不管</h2>]]></content>
       <categories>
         <category>pta</category>
       </categories>
@@ -293,6 +260,17 @@
       </tags>
   </entry>
   <entry>
+    <title>1135 1135RedBlackTree</title>
+    <url>/2020/03/31/1135RedBlackTree/</url>
+    <content><![CDATA[<h5 id="分析：判断给出的先序树是否是红黑树"><a href="#分析：判断给出的先序树是否是红黑树" class="headerlink" title="分析：判断给出的先序树是否是红黑树"></a>分析：判断给出的先序树是否是红黑树</h5><h5 id="这题好像有问题，为什么只给一个先序就可以直接对其进行判断了，连树的结构都没确定"><a href="#这题好像有问题，为什么只给一个先序就可以直接对其进行判断了，连树的结构都没确定" class="headerlink" title="这题好像有问题，为什么只给一个先序就可以直接对其进行判断了，连树的结构都没确定"></a>这题好像有问题，为什么只给一个先序就可以直接对其进行判断了，连树的结构都没确定</h5><h5 id="1-直接给出先序，采用链表存储"><a href="#1-直接给出先序，采用链表存储" class="headerlink" title="1.直接给出先序，采用链表存储"></a>1.直接给出先序，采用链表存储</h5><h5 id="2-考虑红黑树条件"><a href="#2-考虑红黑树条件" class="headerlink" title="2.考虑红黑树条件"></a>2.考虑红黑树条件</h5><h5 id="1-root为black，即-arr-0-gt-0"><a href="#1-root为black，即-arr-0-gt-0" class="headerlink" title="1) root为black，即 arr[0]&gt;0"></a>1) root为black，即 arr[0]&gt;0</h5><h5 id="2-arr-i-lt-0-则-arr-2i-1-和-arr-2i-都-gt-0"><a href="#2-arr-i-lt-0-则-arr-2i-1-和-arr-2i-都-gt-0" class="headerlink" title="2) arr[i]&lt;0,则 arr[2i+1]和 arr[2i]都&gt;0"></a>2) arr[i]&lt;0,则 arr[2i+1]和 arr[2i]都&gt;0</h5><h5 id="3-叶子节点（2i-gt-N）到root的路径，black-即-gt-0-的点要相等"><a href="#3-叶子节点（2i-gt-N）到root的路径，black-即-gt-0-的点要相等" class="headerlink" title="3) 叶子节点（2i&gt;N）到root的路径，black(即&gt;0)的点要相等"></a>3) 叶子节点（2i&gt;N）到root的路径，black(即&gt;0)的点要相等</h5><h2 id="懵了，不管"><a href="#懵了，不管" class="headerlink" title="懵了，不管"></a>懵了，不管</h2>]]></content>
+      <categories>
+        <category>pta</category>
+      </categories>
+      <tags>
+        <tag>pta</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>1155 想要判断给出的binary tree是否是一个heap</title>
     <url>/2020/03/31/1155HeapPaths/</url>
     <content><![CDATA[<a id="more"></a> 
@@ -340,20 +318,6 @@
       </categories>
       <tags>
         <tag>ABP</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>pta相关词汇</title>
-    <url>/2020/03/31/vocabulary/</url>
-    <content><![CDATA[<blockquote>
-<p>vocabulary 词汇<br>positive 正的;积极的<br>traversal 遍历<br>sequence 序列<br>occupy 占领、占用<br>argument 实参<br>parameter 形参<br>ancestor 祖先<br>descendant 后裔、子孙<br>respectively 分别的、各自的<br>postorder traversal sequence 后序遍历序列<br>corresponding 对应的，相应的；一致的<br>recursively 递归的<br>indices 标志，标记；迹象，征象，征候；指数，指标，率</p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>pta</category>
-      </categories>
-      <tags>
-        <tag>pta</tag>
       </tags>
   </entry>
   <entry>
@@ -574,6 +538,39 @@ PersonRepositoryFactory是一个静态类，它创建并返回一个IPersonRepos
       </tags>
   </entry>
   <entry>
+    <title>1102 Invert a Binary Tree</title>
+    <url>/2020/04/07/1102InvertBinaryTree/</url>
+    <content><![CDATA[<h2 id="分析："><a href="#分析：" class="headerlink" title="分析："></a>分析：</h2>]]></content>
+      <categories>
+        <category>pta</category>
+      </categories>
+      <tags>
+        <tag>pta</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>1106 Lowest Price in Supply Chain</title>
+    <url>/2020/03/31/1106LowestPriceInSupplyChain/</url>
+    <content><![CDATA[<h5 id="N-lt-10-10，可以使用vector二维数组存储数据"><a href="#N-lt-10-10，可以使用vector二维数组存储数据" class="headerlink" title="N&lt;10^10，可以使用vector二维数组存储数据"></a>N&lt;10^10，可以使用vector二维数组存储数据</h5><h5 id="万一末尾节点没有零售商？没有在考虑范围内，按照结果来看，零售商应该是叶子节点"><a href="#万一末尾节点没有零售商？没有在考虑范围内，按照结果来看，零售商应该是叶子节点" class="headerlink" title="万一末尾节点没有零售商？没有在考虑范围内，按照结果来看，零售商应该是叶子节点"></a>万一末尾节点没有零售商？没有在考虑范围内，按照结果来看，零售商应该是叶子节点</h5><h5 id="mindep表示层数-num表示叶节点个数"><a href="#mindep表示层数-num表示叶节点个数" class="headerlink" title="mindep表示层数  num表示叶节点个数"></a>mindep表示层数  num表示叶节点个数</h5><h5 id="需要注意结果精确位数"><a href="#需要注意结果精确位数" class="headerlink" title="需要注意结果精确位数"></a>需要注意结果精确位数</h5><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#include &lt;cstdio&gt;</span><br><span class="line">#include &lt;vector&gt;</span><br><span class="line">#include &lt;cmath&gt;</span><br><span class="line"></span><br><span class="line">using namespace std;</span><br><span class="line"></span><br><span class="line">int n;&#x2F;&#x2F;节点数</span><br><span class="line">vector&lt;int&gt; arr[100000];</span><br><span class="line">int mindep &#x3D; 99999999;</span><br><span class="line">int num&#x3D;1;</span><br><span class="line"></span><br><span class="line">void DFS(int root,int depth)</span><br><span class="line">&#123;</span><br><span class="line">    if(mindep&lt;depth)</span><br><span class="line">        return;</span><br><span class="line">    if(arr[root].size() &#x3D;&#x3D; 0)</span><br><span class="line">    &#123;</span><br><span class="line">        if(mindep&gt;depth)</span><br><span class="line">        &#123;</span><br><span class="line">            mindep &#x3D; depth;</span><br><span class="line">            num &#x3D;1;</span><br><span class="line">        &#125;</span><br><span class="line">        else if(mindep&#x3D;&#x3D; depth)</span><br><span class="line">        &#123;</span><br><span class="line">            num++;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    for(int i&#x3D;0; i&lt;arr[root].size(); i++)</span><br><span class="line">    &#123;</span><br><span class="line">        DFS(arr[root][i],depth+1);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">    int n;</span><br><span class="line">    double p,r;</span><br><span class="line">    scanf(&quot;%d %lf %lf&quot;,&amp;n,&amp;p,&amp;r);</span><br><span class="line">    for(int i&#x3D;0; i&lt;n; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        int ln;</span><br><span class="line">        scanf(&quot;%d&quot;,&amp;ln);</span><br><span class="line"></span><br><span class="line">        for(int j&#x3D;0; j&lt;ln; j++)</span><br><span class="line">        &#123;</span><br><span class="line">            int index;</span><br><span class="line">            scanf(&quot;%d&quot;,&amp;index);</span><br><span class="line">            arr[i].push_back(index);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    DFS(0,0);&#x2F;&#x2F;获取树</span><br><span class="line"></span><br><span class="line">    printf(&quot;%.4f %d&quot;,p*pow((1+r&#x2F;100),mindep),num);</span><br><span class="line"></span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>pta</category>
+      </categories>
+      <tags>
+        <tag>pta</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>1115 Counting Nodes in a BST</title>
+    <url>/2020/03/31/1115CountingNodesInBST/</url>
+    <content><![CDATA[<h5 id="分析：左子树小于父节点，右子树大于父节点"><a href="#分析：左子树小于父节点，右子树大于父节点" class="headerlink" title="分析：左子树小于父节点，右子树大于父节点"></a>分析：左子树小于父节点，右子树大于父节点</h5><h5 id="链表存储自定义节点，存储bst，递归构建"><a href="#链表存储自定义节点，存储bst，递归构建" class="headerlink" title="链表存储自定义节点，存储bst，递归构建"></a>链表存储自定义节点，存储bst，递归构建</h5><h5 id="由根节点开始，dfs节点，并累计不同深度的系欸但数量"><a href="#由根节点开始，dfs节点，并累计不同深度的系欸但数量" class="headerlink" title="由根节点开始，dfs节点，并累计不同深度的系欸但数量"></a>由根节点开始，dfs节点，并累计不同深度的系欸但数量</h5><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#include &lt;iostream&gt;</span><br><span class="line">#include &lt;vector&gt;</span><br><span class="line"></span><br><span class="line">using namespace std;</span><br><span class="line">int n;&#x2F;&#x2F;&lt;&#x3D;1000</span><br><span class="line">struct Node</span><br><span class="line">&#123;</span><br><span class="line">    int value;</span><br><span class="line">    struct Node *left,*right;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">Node* Build(struct Node *root,int value)</span><br><span class="line">&#123;</span><br><span class="line">    if(root&#x3D;&#x3D;NULL)</span><br><span class="line">    &#123;</span><br><span class="line">        root &#x3D; new Node();</span><br><span class="line">        root-&gt;value &#x3D; value;</span><br><span class="line">        root-&gt;left &#x3D; NULL;</span><br><span class="line">        root-&gt;right &#x3D; NULL;</span><br><span class="line">    &#125;</span><br><span class="line">    else if(value &lt;&#x3D; root-&gt;value)</span><br><span class="line">    &#123;</span><br><span class="line">        root-&gt;left&#x3D;  Build(root-&gt;left,value);</span><br><span class="line">    &#125;</span><br><span class="line">    else</span><br><span class="line">    &#123;</span><br><span class="line">        root-&gt;right &#x3D; Build(root-&gt;right,value);</span><br><span class="line">    &#125;</span><br><span class="line">    return root;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">vector&lt;int&gt; arr(1001);</span><br><span class="line">int maxDepth &#x3D; 0;</span><br><span class="line"></span><br><span class="line">void DFS(struct Node *root,int depth)</span><br><span class="line">&#123;</span><br><span class="line">    if(root&#x3D;&#x3D;NULL)</span><br><span class="line">    &#123;</span><br><span class="line">        maxDepth &#x3D; max(maxDepth,depth);</span><br><span class="line">        return ;</span><br><span class="line">    &#125;</span><br><span class="line">    arr[depth]++;</span><br><span class="line">    DFS(root-&gt;left,depth+1);</span><br><span class="line">    DFS(root-&gt;right,depth+1);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">    cin&gt;&gt;n;</span><br><span class="line">    int t;</span><br><span class="line">    Node *root &#x3D; NULL;</span><br><span class="line">    for(int i&#x3D;1; i&lt;&#x3D;n; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        cin&gt;&gt;t;</span><br><span class="line">        root &#x3D; Build(root,t);</span><br><span class="line">    &#125;</span><br><span class="line">    DFS(root,1);</span><br><span class="line">    int b &#x3D; arr[maxDepth-1];</span><br><span class="line">    int a &#x3D; arr[maxDepth-2];</span><br><span class="line"></span><br><span class="line">    for(int i&#x3D;0;i&lt;arr.size();i++)</span><br><span class="line">    &#123;</span><br><span class="line">        cout&lt;&lt;arr[i]&lt;&lt;endl;</span><br><span class="line">    &#125;</span><br><span class="line">    printf(&quot;%d + %d &#x3D; %d&quot;,b,a,a+b);</span><br><span class="line"></span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>pta</category>
+      </categories>
+      <tags>
+        <tag>pta</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>日志</title>
     <url>/2020/04/07/2.4%E6%97%A5%E5%BF%97/</url>
     <content><![CDATA[<h2 id="服务器端"><a href="#服务器端" class="headerlink" title="服务器端"></a>服务器端</h2><p>ABP使用Castle Windsor的日志记录工具。它可以和不同的日志库一起工作：Log4Net, NLog, Serilog等等。Castle为所有的日志库提供了一个公共的接口。通过这种方式，你可以独立使用一个特殊的日志库，并且轻松的替换它。</p>
@@ -618,6 +615,20 @@ PersonRepositoryFactory是一个静态类，它创建并返回一个IPersonRepos
       </categories>
       <tags>
         <tag>ABP</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>pta相关词汇</title>
+    <url>/2020/03/31/vocabulary/</url>
+    <content><![CDATA[<blockquote>
+<p>vocabulary 词汇<br>positive 正的;积极的<br>traversal 遍历<br>sequence 序列<br>occupy 占领、占用<br>argument 实参<br>parameter 形参<br>ancestor 祖先<br>descendant 后裔、子孙<br>respectively 分别的、各自的<br>postorder traversal sequence 后序遍历序列<br>corresponding 对应的，相应的；一致的<br>recursively 递归的<br>indices 标志，标记；迹象，征象，征候；指数，指标，率<br>invert 使…反转<br>adjacent 临近的</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>pta</category>
+      </categories>
+      <tags>
+        <tag>pta</tag>
       </tags>
   </entry>
 </search>
